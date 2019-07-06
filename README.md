@@ -18,7 +18,8 @@ docker pull keinos/php8-jit
 
 ## Usage
 
-```bash
+```shellsession
+$ # Run interactive
 $ docker pull keinos/php8-jit
 ...
 $ docker run --rm -it keinos/php8-jit
@@ -28,6 +29,19 @@ php > echo phpversion();
 8.0.0-dev
 php > exit
 $
+```
+
+```shellsession
+$ ls
+test.php
+$ # Run script
+$ docker run --rm \
+>   -it \
+>   -v $(pwd)/test.php:/usr/src/app/test.php \
+>   -w /usr/src/app \
+>   keinos/php8-jit \
+>   php test.php
+...
 ```
 
 ## Perfomance Comparison
