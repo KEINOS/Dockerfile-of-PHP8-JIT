@@ -7,3 +7,5 @@ HEALTHCHECK \
   --timeout=10s \
   --start-period=10m \
   --retries=1 CMD [ 'php -r "echo phpversion();"' ]
+
+USER www-data
