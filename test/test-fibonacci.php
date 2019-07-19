@@ -2,6 +2,7 @@
 # Run a nice and simple Fibonacci function.
 # See: https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/
 
+echo 'TEST: Fibonacci 32', PHP_EOL;
 echo 'PHP Version:', phpversion(), PHP_EOL;
 
 function fibonacci($n){
