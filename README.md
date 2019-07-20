@@ -4,24 +4,88 @@
 
 # PHP8.0 with JIT Enabled on Docker
 
-```bash
-docker pull keinos/php8-jit
-```
+- x86_64/Intel CPU Architecture: (For most users)
+
+    ```bash
+    docker pull keinos/php8-jit:latest
+    ```
+
+- ARM CPU Architecture: (RaspberryPi Users)
+
+    ```bash
+    docker pull keinos/php8-jit:arm
+    ```
 
 - This image is based on:
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
-  - Base Image: [akondas/php](https://hub.docker.com/r/akondas/php) @ Docker Hub
 
 - Image Info
+  - Base Image: Alpine Linux v3.8
   - Image: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
   - Source: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
+  - Default user: `www-data`
+
+- Settings to be noted:
+  - JIT/OPcache/Sodium: enabled
+  - `mbstring`: enabled
+    - multibyte = On
+    - Encoding = UTF-8 (Both script and internal)
+    - language = Japanese
+
+<details><summary>Loaded Extension</summary><div>
+
+Here's the result of `get_loaded_extensions()`.
+
+```shellsession
+$ docker run --rm -it keinos/php8-jit php -r "print_r(get_loaded_extensions());"
+Array
+(
+    [0] => Core
+    [1] => date
+    [2] => libxml
+    [3] => pcre
+    [4] => sqlite3
+    [5] => zlib
+    [6] => ctype
+    [7] => curl
+    [8] => dom
+    [9] => fileinfo
+    [10] => filter
+    [11] => ftp
+    [12] => hash
+    [13] => iconv
+    [14] => json
+    [15] => mbstring
+    [16] => pcntl
+    [17] => SPL
+    [18] => PDO
+    [19] => pdo_sqlite
+    [20] => session
+    [21] => posix
+    [22] => readline
+    [23] => Reflection
+    [24] => standard
+    [25] => SimpleXML
+    [26] => Phar
+    [27] => tokenizer
+    [28] => xml
+    [29] => xmlreader
+    [30] => xmlwriter
+    [31] => mysqlnd
+    [32] => sodium
+    [33] => Zend OPcache
+)
+```
+
+</div></details>
 
 ## Usage
 
 ```shellsession
-$ # Run interactive
+$ # Pull image if needed
 $ docker pull keinos/php8-jit
 ...
+$ # Run interactively
 $ docker run --rm -it keinos/php8-jit
 Interactive shell
 
@@ -32,11 +96,14 @@ $
 ```
 
 ```shellsession
+$ # Pull image if needed
+$ docker pull keinos/php8-jit
+...
+$ # Mount local file and run
 $ ls
 test.php
 $ # Run script
 $ docker run --rm \
->   -it \
 >   -v $(pwd)/test.php:/usr/src/app/test.php \
 >   -w /usr/src/app \
 >   keinos/php8-jit \

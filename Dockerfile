@@ -1,9 +1,3 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
 FROM alpine:3.8
 
 # dependencies required for running "phpize"
@@ -102,15 +96,17 @@ RUN set -xe \
 		--with-config-file-path="$PHP_INI_DIR" \
 		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
 		\
-# make sure invalid --configure-flags are fatal errors intead of just warnings
+# make sure invalid --configure-flags are fatal errors instead of just warnings
 		--enable-option-checking=fatal \
 		\
 # https://github.com/docker-library/php/issues/439
 		--with-mhash \
 		\
-# --enable-ftp is included here because ftp_ssl_connect() needs ftp to be compiled statically (see https://github.com/docker-library/php/issues/236)
+# --enable-ftp is included here because ftp_ssl_connect() needs ftp to be compiled statically
+# (see https://github.com/docker-library/php/issues/236)
 		--enable-ftp \
-# --enable-mysqlnd is included here because it's harder to compile after the fact than extensions are (since it's a plugin for several extensions, not an extension in itself)
+# --enable-mysqlnd is included here because it's harder to compile after the fact than extensions are
+# (since it's a plugin for several extensions, not an extension in itself)
 		--enable-mysqlnd \
 # https://wiki.php.net/rfc/argon2_password_hash (7.2+)
 		--with-password-argon2 \
