@@ -6,74 +6,66 @@
 #   - php8.0.0 with no JIT enabled
 #   - php8.0.0 with JIT enabled
 
-#name_test='test-fibonacci.php'
-name_test='test-zundoko.php'
+# Filenames of the tests to run
+list_test=(
+  'test-fibonacci.php'
+  'test-zundoko.php'
+  'test-zend_bench.php'
+)
 
-name_image_php5='php:5.6.40-alpine'
-name_image_php7_1='php:7.1.23-alpine'
-name_image_php7_3='php:7.3.6-alpine'
-name_image_php8noJit='akondas/php:8.0-cli-alpine'
-name_image_php8jit='php:8.0-jit'
+# Docker images to compare. PHP8 with JIT=on will be added later.
+list_image=(
+  'php:5.6.40-alpine'
+  'php:7.1.23-alpine'
+  'php:7.3.6-alpine'
+  'akondas/php:8.0-cli-alpine'
+)
+
+function runTest(){
+  name_image=$1
+  name_test=$2
+  docker run --rm \
+    -v $(pwd)/test:/usr/src/app \
+    -w /usr/src/app \
+    $name_image \
+    php $name_test
+  return $?
+}
 
 echo '============='
 echo ' Preparation '
 echo '============='
 
-echo '- Pulling images'
-docker pull $name_image_php5 && \
-docker pull $name_image_php7_1 && \
-docker pull $name_image_php7_3 && \
-docker pull $name_image_php8noJit
+echo '- Clean Up unused images'
+docker image prune -f | awk '{print "\t", $0}'
 
-docker image ls | grep php | grep 8.0-jit 2>&1 > /dev/null
+name_image_php8jit=$(docker image ls --format "{{.Repository}}:{{.Tag}}" | grep php | grep 8 | grep jit | grep keinos)
 if [ $? -ne 0 ]; then
-  echo '- PHP8 JIT not found'
-  echo '- Building image of PHP8 with JIT ... '
-  docker build --no-cache -t $name_image_php8jit . 2>&1 > /dev/null
+  name_image_php8jit='php8-jit:local'
+  echo '- PHP8 with JIT=on not found'
+  echo '- Building image of PHP8 with JIT=on ...(This will take time)'
+  #docker build --quiet --no-cache -t $name_image_php8jit .
   if [ $? -ne 0 ]; then
     echo 'NG. Failed to build image.'
     exit 1
   fi
 fi
+# Add PHP8 with JIT=on to the image list
+list_image+=($name_image_php8jit)
+
+echo '- Pulling images'
+for item in ${list_image[@]}; do
+    docker pull $item | awk '{print "\t", $0}'
+    echo
+done
 
 echo '==============='
 echo ' Running Tests '
 echo '==============='
 
-echo '- Run test in PHP5 (Docker)'
-docker run --rm \
-  -v $(pwd)/test:/usr/src/app \
-  -w /usr/src/app \
-  $name_image_php5 \
-  php $name_test
-
-echo '- Run test in PHP7.1 (Local)'
-php test/$name_test
-
-echo '- Run test in PHP7.1 (Docker)'
-docker run --rm \
-  -v $(pwd)/test:/usr/src/app \
-  -w /usr/src/app \
-  $name_image_php7_1 \
-  php $name_test
-
-echo '- Run test in PHP7.3 (Docker)'
-docker run --rm \
-  -v $(pwd)/test:/usr/src/app \
-  -w /usr/src/app \
-  $name_image_php7_3 \
-  php $name_test
-
-echo '- Run test in PHP8 with NO JIT (Docker)'
-docker run --rm \
-  -v $(pwd)/test:/usr/src/app \
-  -w /usr/src/app \
-  $name_image_php8noJit \
-  php $name_test
-
-echo '- Run test in PHP8 with JIT' && \
-docker run --rm \
-  -v $(pwd)/test:/usr/src/app \
-  -w /usr/src/app \
-  $name_image_php8jit \
-  php $name_test
+for image in ${list_image[@]}; do
+  echo '- Image:' $image
+  for test in ${list_test[@]}; do
+    runTest $image $test | awk '{print "\t", $0}'
+  done
+done
