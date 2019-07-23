@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM keinos/alpine:latest
 
 # dependencies required for running "phpize"
 # these get automatically installed and removed by "docker-php-ext-*" (unless they're already installed)

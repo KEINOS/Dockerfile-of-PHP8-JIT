@@ -44,7 +44,7 @@ if [ $? -ne 0 ]; then
   name_image_php8jit='php8-jit:local'
   echo '- PHP8 with JIT=on not found'
   echo '- Building image of PHP8 with JIT=on ...(This will take time)'
-  #docker build --quiet --no-cache -t $name_image_php8jit .
+  docker build --quiet --no-cache -t $name_image_php8jit .
   if [ $? -ne 0 ]; then
     echo 'NG. Failed to build image.'
     exit 1
