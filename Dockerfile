@@ -112,6 +112,9 @@ RUN set -xe \
 		--with-password-argon2 \
 # https://wiki.php.net/rfc/libsodium
 		--with-sodium=shared \
+# https://stackoverflow.com/a/43949863/8367711
+		--with-openssl=/usr \
+	      --with-system-ciphers \
 		\
 		--with-curl \
 		--with-libedit \
