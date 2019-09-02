@@ -119,6 +119,8 @@ RUN set -xe \
 		--with-curl \
 		--with-libedit \
 		--with-zlib \
+		\
+		--enable-soap \
 		--enable-pcntl \
 		--enable-opcache \
 # https://www.php.net/manual/ja/mbstring.installation.php
