@@ -83,8 +83,11 @@ RUN set -xe \
 		libressl-dev \
 		sqlite-dev \
 		bison \
+		libffi \
+		libffi-dev \
 	\
-	&& export CFLAGS="$PHP_CFLAGS" \
+	&& export \
+		CFLAGS="$PHP_CFLAGS" \
 		CPPFLAGS="$PHP_CPPFLAGS" \
 		LDFLAGS="$PHP_LDFLAGS" \
 	&& docker-php-source extract \
@@ -115,10 +118,14 @@ RUN set -xe \
 # https://stackoverflow.com/a/43949863/8367711
 		--with-openssl=/usr \
 	      --with-system-ciphers \
+# https://wiki.php.net/rfc/ffi
+		--with-ffi \
 		\
 		--with-curl \
 		--with-libedit \
 		--with-zlib \
+		\
+		--enable-soap \
 		--enable-pcntl \
 		--enable-opcache \
 # https://www.php.net/manual/ja/mbstring.installation.php
