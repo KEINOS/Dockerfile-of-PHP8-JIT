@@ -4,17 +4,21 @@
 
 # PHP8.0 with JIT Enabled on Docker
 
-- x86_64/Intel CPU Architecture: (For most users)
+- x86_64/ARMv7/ARMv6 architecture available.
 
     ```bash
+    # x86_64(Intel/AMD) CPU Architecture (For most users)
     docker pull keinos/php8-jit:latest
     ```
-
-- ARM CPU Architecture: (RaspberryPi Users)
-
     ```bash
+    # ARMv7 CPU Architecture (For RaspberryPi Users)
     docker pull keinos/php8-jit:arm
     ```
+    ```bash
+    # ARMv6 CPU Architecture (For RaspberryPi Zero Users)
+    docker pull keinos/php8-jit:arm32v6
+    ```
+  - [Available Tags](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags)
 
 - This image is based on:
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
