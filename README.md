@@ -35,53 +35,9 @@
     - multibyte = On
     - Encoding = UTF-8 (Both script and internal)
     - language = Japanese
-
-<details><summary>Loaded Extension</summary><div>
-
-- Here's the result of `get_loaded_extensions()`:
-
-    ```shellsession
-    $ docker run --rm -it keinos/php8-jit php -r '$list=get_loaded_extensions();sort($list, SORT_NATURAL | SORT_FLAG_CASE); print_r($list);'
-    Array
-    (
-        [0] => Core
-        [1] => ctype
-        [2] => curl
-        [3] => date
-        [4] => dom
-        [5] => fileinfo
-        [6] => filter
-        [7] => ftp
-        [8] => hash
-        [9] => iconv
-        [10] => json
-        [11] => libxml
-        [12] => mbstring
-        [13] => mysqlnd
-        [14] => pcntl
-        [15] => pcre
-        [16] => PDO
-        [17] => pdo_sqlite
-        [18] => Phar
-        [19] => posix
-        [20] => readline
-        [21] => Reflection
-        [22] => session
-        [23] => SimpleXML
-        [24] => sodium
-        [25] => SPL
-        [26] => sqlite3
-        [27] => standard
-        [28] => tokenizer
-        [29] => xml
-        [30] => xmlreader
-        [31] => xmlwriter
-        [32] => Zend OPcache
-        [33] => zlib
-    )
-    ```
-
-</div></details>
+  - GD: enabled
+  - [phpinfo()]('phpinfo.txt')
+  - Loaded Extensions]('info-get_loaded_extensions.txt')
 
 ## Usage
 
