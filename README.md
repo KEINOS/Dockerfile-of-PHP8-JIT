@@ -7,12 +7,8 @@
 - x86_64/ARMv7/ARMv6 architecture available.
 
     ```bash
-    # x86_64(Intel/AMD) CPU Architecture (For most users)
+    # x86_64(Intel/AMD) and ARMv7 CPU Architecture (For most users)
     docker pull keinos/php8-jit:latest
-    ```
-    ```bash
-    # ARMv7 CPU Architecture (For RaspberryPi Users)
-    docker pull keinos/php8-jit:arm
     ```
     ```bash
     # ARMv6 CPU Architecture (For RaspberryPi Zero Users)
@@ -24,12 +20,12 @@
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
 
 - Image Info
-  - Base Image: Alpine Linux v3.8
-  - Image: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
-  - Source: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
-  - Default user: `www-data`
+  - Base Image: Alpine Linux v3.8 (keinos/alpine)
+  - Image Repo: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
+  - Source Repo: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
 
 - Settings to be noted:
+  - Default user: `www-data`
   - JIT/OPcache/Sodium: enabled
   - `mbstring`: enabled
     - multibyte = On
@@ -42,11 +38,14 @@
 ## Usage
 
 ```shellsession
-$ # Pull image if needed
-$ docker pull keinos/php8-jit
+$ # Pull image (If ARMv6 architecture then specify tag as keinos/php8-jit:arm32v6)
+$ docker pull keinos/php8-jit:latest
 ...
+```
+
+```shellsession
 $ # Run interactively
-$ docker run --rm -it keinos/php8-jit
+$ docker run --rm -it keinos/php8-jit:latest
 Interactive shell
 
 php > echo phpversion();
@@ -56,16 +55,13 @@ $
 ```
 
 ```shellsession
-$ # Pull image if needed
-$ docker pull keinos/php8-jit
-...
 $ # Mount local file and run
 $ ls
 test.php
 $ # Run script
 $ docker run --rm \
->   -v $(pwd)/test.php:/usr/src/app/test.php \
->   -w /usr/src/app \
+>   -v $(pwd)/test.php:/app/test.php \
+>   -w /app \
 >   keinos/php8-jit \
 >   php test.php
 ...
