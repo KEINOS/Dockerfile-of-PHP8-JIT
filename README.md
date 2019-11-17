@@ -4,6 +4,8 @@
 
 # PHP8.0 with JIT Enabled on Docker
 
+This is a PHP-8-ish(latest master branch of PHP) with JIT feature enabled on Docker.
+
 - x86_64/ARMv7/ARMv6 architecture available.
 
     ```bash
