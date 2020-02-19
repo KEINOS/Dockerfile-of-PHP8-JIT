@@ -1,4 +1,6 @@
-FROM keinos/alpine:latest
+ARG TAG_IMAGE=latest
+
+FROM keinos/alpine:$TAG_IMAGE
 # =============================================================================
 
 # Dependencies required for running "phpize"
@@ -79,9 +81,8 @@ COPY scripts/docker-php-source /usr/local/bin/
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
-# This will install:
-#   libbz2, libpng, freetype, libjpeg-turbo, libwebp, libgd, gd, perl, pkgconf,
-#   gd-dev
+# gd-dev will install:
+#   gd-dev, libbz2, libpng, freetype, libjpeg-turbo, libwebp, libgd, gd, perl, pkgconf,
         gd-dev \
         \
         argon2-dev \
@@ -154,6 +155,7 @@ RUN set -xe \
         --enable-soap \
         --enable-pcntl \
         --enable-opcache \
+        --enable-sockets \
         \
 # bundled pcre does not support JIT on s390x
 # https://manpages.debian.org/stretch/libpcre3-dev/pcrejit.3.en.html#AVAILABILITY_OF_JIT_SUPPORT
