@@ -69,6 +69,27 @@ $ docker run --rm \
 ...
 ```
 
+- How to add PHP extensions in your Dockerfile
+  - Use `docker-php-ext-enable` command in your `RUN` directive.
+
+```Dockerfile
+FROM keinos/php8-jit:latest
+
+RUN apk --no-cache --update add \
+        bash \
+        git \
+        autoconf \
+        build-base \
+        wget \
+        zip unzip \
+    && pecl install \
+        xdebug \
+        ast-1.0.6 \
+    && docker-php-ext-enable \
+        xdebug \
+        ast
+```
+
 ## Perfomance Comparison
 
 - [Test Code](https://github.com/KEINOS/Dockerfile-of-PHP8-JIT/blob/php8-jit/test/test-fibonacci.php)
