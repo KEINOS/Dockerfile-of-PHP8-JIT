@@ -1,6 +1,7 @@
-ARG TAG_IMAGE=latest
+ARG NAME_BASE
+ARG NAME_TAG
 
-FROM keinos/alpine:$TAG_IMAGE
+FROM ${NAME_BASE}:${NAME_TAG}
 # =============================================================================
 
 # Dependencies required for running "phpize"
