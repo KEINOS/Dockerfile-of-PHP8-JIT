@@ -1,37 +1,44 @@
-Array
-(
-    [0] => Core
-    [1] => ctype
-    [2] => curl
-    [3] => date
-    [4] => dom
-    [5] => fileinfo
-    [6] => filter
-    [7] => ftp
-    [8] => hash
-    [9] => iconv
-    [10] => json
-    [11] => libxml
-    [12] => mbstring
-    [13] => mysqlnd
-    [14] => pcntl
-    [15] => pcre
-    [16] => PDO
-    [17] => pdo_sqlite
-    [18] => Phar
-    [19] => posix
-    [20] => readline
-    [21] => Reflection
-    [22] => session
-    [23] => SimpleXML
-    [24] => sodium
-    [25] => SPL
-    [26] => sqlite3
-    [27] => standard
-    [28] => tokenizer
-    [29] => xml
-    [30] => xmlreader
-    [31] => xmlwriter
-    [32] => Zend OPcache
-    [33] => zlib
-)
+[PHP Modules]
+Core
+ctype
+curl
+date
+dom
+FFI
+fileinfo
+filter
+ftp
+gd
+hash
+iconv
+json
+libxml
+mbstring
+mysqlnd
+openssl
+pcntl
+pcre
+PDO
+pdo_sqlite
+Phar
+posix
+readline
+Reflection
+session
+SimpleXML
+soap
+sockets
+sodium
+SPL
+sqlite3
+standard
+tokenizer
+xml
+xmlreader
+xmlwriter
+Zend OPcache
+zlib
+
+[Zend Modules]
+Zend OPcache
+
