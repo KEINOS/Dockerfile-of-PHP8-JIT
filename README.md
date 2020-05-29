@@ -3,20 +3,19 @@
 
 # PHP8.0 with JIT Enabled on Docker
 
-This is a PHP-8-ish (latest master branch of PHP) with JIT feature enabled on Docker.
+This is a PHP-8-ish (latest `master` branch of PHP) with JIT feature enabled on Docker. `latest` tag works on: ARM v6l, ARMv7l, ARM64, AMD (x86_64/Intel) architectures.
 
 ```bash
 docker pull keinos/php8-jit:latest
 ```
 
-- Available architectures: ARM v6 and v7 (RaspberryPi Zero and 3+), ARM64, x86_64(AMD/Intel)
 - [Available Tags](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags)
 
 - This image is based on:
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
 
 - Image Info
-  - Base Image: Alpine Linux v3.8 (keinos/alpine)
+  - Base Image: Alpine Linux v3.11.6 (keinos/alpine:latest)
   - Image Repo: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
   - Source Repo: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
 
@@ -28,8 +27,8 @@ docker pull keinos/php8-jit:latest
     - Encoding = UTF-8 (Both script and internal)
     - language = Japanese
   - GD: enabled
-  - [phpinfo()]('phpinfo.txt')
-  - Loaded Extensions]('info-get_loaded_extensions.txt')
+  - [phpinfo()]('https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-phpinfo.txt')
+  - Loaded Extensions]('https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-get_loaded_extensions.txt')
 
 ## Usage
 
