@@ -3,7 +3,9 @@
 
 # PHP8.0 with JIT Enabled on Docker
 
-This is a PHP-8-ish (latest `master` branch of PHP) with JIT feature enabled on Docker. `latest` tag works on: ARM v6l, ARMv7l, ARM64, AMD (x86_64/Intel) architectures.
+This is a PHP-8-ish Docker image with JIT feature enabled. Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub.
+
+The `latest` tag works on: ARM v6l, ARM v7l, ARM64, AMD (x86_64/Intel) architectures.
 
 ```bash
 docker pull keinos/php8-jit:latest
@@ -15,6 +17,7 @@ docker pull keinos/php8-jit:latest
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
 
 - Image Info
+  - Build Frequency: Every update of Alpine Docker image.
   - Base Image: Alpine Linux v3.11.6 (keinos/alpine:latest)
   - Image Repo: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
   - Source Repo: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
@@ -33,26 +36,28 @@ docker pull keinos/php8-jit:latest
 ## Usage
 
 ```shellsession
-$ # Pull image (If ARMv6 architecture then specify tag as keinos/php8-jit:arm32v6)
-$ docker pull keinos/php8-jit:latest
+$ # Pull latest image
+$ docker pull keinos/php8-jit
 ...
 ```
 
 ```shellsession
 $ # Run interactively
-$ docker run --rm -it keinos/php8-jit:latest
+$ docker run --rm -it keinos/php8-jit
 Interactive shell
 
 php > echo phpversion();
 8.0.0-dev
+php > 
 php > exit
 $
 ```
 
 ```shellsession
-$ # Mount local file and run
+$ # Mount local file and run/execute the script
 $ ls
 test.php
+
 $ # Run script
 $ docker run --rm \
 >   -v $(pwd)/test.php:/app/test.php \
