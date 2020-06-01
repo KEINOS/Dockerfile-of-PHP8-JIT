@@ -24,14 +24,15 @@ docker pull keinos/php8-jit:latest
 
 - Settings to be noted:
   - Default user: `www-data`
-  - **JIT**/OPcache/Sodium: enabled
+  - Modules/Extensions:
+    - **JIT**/**FFI**/OPcache/Sodium: enabled
+    - For more see: [Loaded Extensions]('https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-get_loaded_extensions.txt')
   - `mbstring`: enabled
     - multibyte = On
     - Encoding = UTF-8 (Both script and internal)
     - language = Japanese
   - GD: enabled
   - [phpinfo()]('https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-phpinfo.txt')
-  - Loaded Extensions]('https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-get_loaded_extensions.txt')
 
 ## Usage
 
