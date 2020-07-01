@@ -68,8 +68,22 @@ $ docker run --rm \
 ...
 ```
 
-- How to add PHP extensions in your Dockerfile
-  - Use `docker-php-ext-enable` command in your `RUN` directive.
+### Installing Extensions
+
+To instal PHP extensions in your Dockerfile use `docker-php-ext-install` command in your `RUN` directive. This will enables it as well.
+
+```Dockerfile
+FROM keinos/php8-jit:latest
+
+RUN docker-php-ext-install sockets
+```
+
+- Available extensions to install
+  - [php-src/tree/master/ext](https://github.com/php/php-src/tree/master/ext) | PHP @ GitHub
+
+### Enabling Extensions
+
+To enable compiled PHP extensions in your Dockerfile use `docker-php-ext-enable` command in your `RUN` directive.
 
 ```Dockerfile
 FROM keinos/php8-jit:latest
