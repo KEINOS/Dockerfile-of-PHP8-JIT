@@ -4,7 +4,7 @@
 
 # PHP8.0 with JIT Enabled on Docker
 
-This is a PHP8-dev (php 8.0.0-aplha) Docker image with **JIT feature enabled**.
+This is a PHP8-dev (php 8.0.0-alpha) Docker image with **JIT feature enabled**.
 
 ```bash
 docker pull keinos/php8-jit:latest
