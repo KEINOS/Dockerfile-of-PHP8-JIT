@@ -72,38 +72,42 @@ $ docker run --rm \
 
 ### Installing Extensions
 
-To instal PHP extensions in your Dockerfile use `docker-php-ext-install` command in your `RUN` directive. This will enables it as well.
+To instal PHP extensions use `docker-php-ext-install` command. This will enable the extension as well.
 
-```Dockerfile
-FROM keinos/php8-jit:latest
+- Dockerfile sample to install `sockets` extension.
 
-RUN docker-php-ext-install sockets
-```
+  ```Dockerfile
+  FROM keinos/php8-jit:latest
+  
+  RUN docker-php-ext-install sockets
+  ```
 
 - Available extensions to install
   - [php-src/tree/master/ext](https://github.com/php/php-src/tree/master/ext) | PHP @ GitHub
 
 ### Enabling Extensions
 
-To enable compiled PHP extensions in your Dockerfile use `docker-php-ext-enable` command in your `RUN` directive.
+To enable compiled PHP extensions use `docker-php-ext-enable` command. This will enable the extension as well.
 
-```Dockerfile
-FROM keinos/php8-jit:latest
+- Dockerfile sample to enable installed extension.
 
-RUN apk --no-cache --update add \
-        bash \
-        git \
-        autoconf \
-        build-base \
-        wget \
-        zip unzip \
-    && pecl install \
-        xdebug \
-        ast-1.0.6 \
-    && docker-php-ext-enable \
-        xdebug \
-        ast
-```
+  ```Dockerfile
+  FROM keinos/php8-jit:latest
+  
+  RUN apk --no-cache --update add \
+          bash \
+          git \
+          autoconf \
+          build-base \
+          wget \
+          zip unzip \
+      && pecl install \
+          xdebug \
+          ast-1.0.6 \
+      && docker-php-ext-enable \
+          xdebug \
+          ast
+  ```
 
 ## Perfomance Comparison
 
