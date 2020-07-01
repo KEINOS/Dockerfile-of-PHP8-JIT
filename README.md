@@ -10,7 +10,8 @@ This is a PHP8-dev (php 8.0.0-alpha) Docker image with **JIT feature enabled**.
 docker pull keinos/php8-jit:latest
 ```
 
-- Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub. The date build see the badge avobe.
+- Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub.
+  - Date built: See the version badge above.
 - The `latest` tag **works on: ARM v6l, ARM v7l, ARM64, AMD (x86_64/Intel) architectures**.
   - [Available tags to pull](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags)
 
