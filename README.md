@@ -1,17 +1,18 @@
 [![](https://img.shields.io/docker/image-size/keinos/php8-jit?sort=semver)](https://cloud.docker.com/repository/docker/keinos/php8-jit "Docker Image Size (latest semver)")
-![Docker Pulls](https://img.shields.io/docker/pulls/keinos/php8-jit)
+[![](https://img.shields.io/docker/pulls/keinos/php8-jit)](https://hub.docker.com/r/keinos/php8-jit "Docker Pulls from Docker Hub")
+[![](https://img.shields.io/docker/v/keinos/php8-jit)](https://hub.docker.com/r/keinos/php8-jit/tags "Latest build")
 
 # PHP8.0 with JIT Enabled on Docker
 
-This is a PHP-8-ish Docker image with JIT feature enabled. Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub.
-
-The `latest` tag works on: ARM v6l, ARM v7l, ARM64, AMD (x86_64/Intel) architectures.
+This is a PHP8-dev (php 8.0.0-aplha) Docker image with **JIT feature enabled**.
 
 ```bash
 docker pull keinos/php8-jit:latest
 ```
 
-- [Available Tags](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags)
+- Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub. The date build see the badge avobe.
+- The `latest` tag **works on: ARM v6l, ARM v7l, ARM64, AMD (x86_64/Intel) architectures**.
+  - [Available tags to pull](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags)
 
 - This image is based on:
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
