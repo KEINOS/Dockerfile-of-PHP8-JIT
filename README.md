@@ -32,7 +32,7 @@ docker pull keinos/php8-jit:latest
 - Settings to be noted:
   - Default user: `www-data`
   - Modules/Extensions:
-    - **JIT**/**FFI**/OPcache/Sodium: enabled
+    - **JIT**/**FFI**/OPcache/Sodium/PECL: enabled
     - For more see: [Loaded Extensions](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-get_loaded_extensions.txt)
   - `mbstring`: enabled
     - multibyte = On
@@ -89,7 +89,8 @@ Copyright (c) The PHP Group
 Zend Engine v4.0.0-dev, Copyright (c) Zend Technologies
     with Zend OPcache v8.0.0-dev, Copyright (c), by Zend Technologies
 / $ cd /app
-/ $ cd /ls
+/app $
+/app $ ls
 test.php
 /app $ php test.php
 Hello, World!
@@ -112,30 +113,6 @@ To instal PHP extensions use `docker-php-ext-install` command. This will enable 
 
 - Available extensions to install
   - [php-src/tree/master/ext](https://github.com/php/php-src/tree/master/ext) | PHP @ GitHub
-
-### Enabling Extensions
-
-To enable compiled PHP extensions use `docker-php-ext-enable` command. This will enable the extension as well.
-
-- Dockerfile sample to enable installed extension.
-
-  ```Dockerfile
-  FROM keinos/php8-jit:latest
-  
-  RUN apk --no-cache --update add \
-          bash \
-          git \
-          autoconf \
-          build-base \
-          wget \
-          zip unzip \
-      && pecl install \
-          xdebug \
-          ast-1.0.6 \
-      && docker-php-ext-enable \
-          xdebug \
-          ast
-  ```
 
 ## Perfomance Comparison
 
