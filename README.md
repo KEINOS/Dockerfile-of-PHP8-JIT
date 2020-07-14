@@ -10,12 +10,15 @@ This is a PHP8-dev (php 8.0.0-alpha) Docker image with **JIT feature enabled**.
 docker pull keinos/php8-jit:latest
 ```
 
+- The `latest` tag image **works on: ARM v6l, ARM v7l, ARM64, x86_64 (AMD/Intel) architectures**.
+
 <details><summary>Image Information</summary><div><br>
 
 - Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub.
   - Date built: See the version badge above.
-- The `latest` tag **works on: ARM v6l, ARM v7l, ARM64, x86_64 (AMD/Intel) architectures**.
-  - [Available tags to pull](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags)
+- Tags available
+  - `latest`: (Works on ARM v6l, ARM v7l, ARM64, x86_64 (AMD/Intel) architectures)
+  - For other tags available to pull [see](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags)
 
 - This image is based on:
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
