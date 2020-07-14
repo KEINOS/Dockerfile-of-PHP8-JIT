@@ -10,9 +10,11 @@ This is a PHP8-dev (php 8.0.0-alpha) Docker image with **JIT feature enabled**.
 docker pull keinos/php8-jit:latest
 ```
 
+<details><summary>Image Information</summary><div><br>
+
 - Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub.
   - Date built: See the version badge above.
-- The `latest` tag **works on: ARM v6l, ARM v7l, ARM64, AMD (x86_64/Intel) architectures**.
+- The `latest` tag **works on: ARM v6l, ARM v7l, ARM64, x86_64 (AMD/Intel) architectures**.
   - [Available tags to pull](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags)
 
 - This image is based on:
@@ -20,7 +22,7 @@ docker pull keinos/php8-jit:latest
 
 - Image Info
   - Build Frequency: Every update of Alpine Docker image.
-  - Base Image: Alpine Linux v3.11.6 (keinos/alpine:latest)
+  - Base Image: Alpine Linux v3.12.0 (keinos/alpine:latest)
   - Image Repo: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
   - Source Repo: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
 
@@ -35,6 +37,10 @@ docker pull keinos/php8-jit:latest
     - language = Japanese
   - GD: enabled
   - [phpinfo()](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-phpinfo.txt)
+
+---
+
+</div></details>
 
 ## Usage
 
@@ -67,7 +73,26 @@ $ docker run --rm \
 >   -w /app \
 >   keinos/php8-jit \
 >   php test.php
-...
+Hello, World!
+$ 
+```
+
+```shellsession
+$ # Mount files and run interactively inside the container
+$ docker run --rm -it -v $(pwd):/app keinos/php8-jit /bin/sh
+/ $ php -v
+PHP 8.0.0-dev (cli) (built: Jun 27 2020 22:23:17) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v4.0.0-dev, Copyright (c) Zend Technologies
+    with Zend OPcache v8.0.0-dev, Copyright (c), by Zend Technologies
+/ $ cd /app
+/ $ cd /ls
+test.php
+/app $ php test.php
+Hello, World!
+/app $ 
+/app $ exit
+$
 ```
 
 ### Installing Extensions
