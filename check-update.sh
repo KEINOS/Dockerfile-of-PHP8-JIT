@@ -17,7 +17,7 @@
 # Define Basic Variables
 PATH_FILE_VER_INFO='VERSION_IMAGE_BASE.txt'
 NAME_IMAGE_DOCKER='keinos/alpine'
-BUILD_ID=$(date '+%Y%m%d')
+BUILD_ID_CURRENT=$(date '+%Y%m%d')
 
 # Displays Docker Version info to see Docker Cloud Architecture
 docker version
@@ -38,7 +38,7 @@ VERSION_NEW=$(docker run --rm -i alpine:latest cat /etc/os-release | grep VERSIO
 echo '- Latest version:' $VERSION_NEW
 
 # Compare
-if [ $VERSION_ID = $VERSION_NEW ]; then
+if [ $VERSION_ID = $VERSION_NEW ] && [ $BUILD_ID = $BUILD_ID_CURRENT ]; then
    echo 'No update found. Do nothing.'
    exit 1
 fi
