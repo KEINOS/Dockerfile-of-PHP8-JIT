@@ -24,7 +24,11 @@ docker version
 
 # Load current version info
 source ./$PATH_FILE_VER_INFO
-echo '- Current version:' $VERSION_ID
+echo '- Current version:' ${VERSION_ID:-unknown}
+echo '- Current build ID:' ${BUILD_ID:-unknown}
+
+# Clear all the docker images
+docker system prune -f -a
 
 # Pull latest Alpine image
 docker pull alpine:latest > /dev/null

@@ -108,9 +108,6 @@ VERSION_OS=$VERSION_ID
 echo '- Current Alpine version:' $VERSION_OS
 echo '- Current Build ID:' $BUILD_ID
 
-# Clear all the docker images
-docker system prune -f -a
-
 # Setup docker for multi-arc
 login_docker
 
