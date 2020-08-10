@@ -38,7 +38,7 @@ HEREDOC
 NAME_IMAGE='keinos/php8-jit'
 PATH_FILE_VER_INFO='VERSION_IMAGE_BASE.txt'
 NAME_BUILDER=mybuilder
-BUILD_ID=$(date '+%Y%m%d')
+BUILD_ID_CURRENT=$(date '+%Y%m%d')
 
 # -----------------------------------------------------------------------------
 #  Functions
@@ -102,10 +102,14 @@ function rewrite_variant_manifest () {
 #  Main
 # -----------------------------------------------------------------------------
 
-# Load current Alpine version info
+# Load current Alpine version info and build ID
 source ./$PATH_FILE_VER_INFO
 VERSION_OS=$VERSION_ID
 echo '- Current Alpine version:' $VERSION_OS
+echo '- Current Build ID:' $BUILD_ID
+
+# Clear all the docker images
+docker system prune -f -a
 
 # Setup docker for multi-arc
 login_docker
@@ -163,7 +167,7 @@ docker manifest push $NAME_IMAGE_AND_TAG --purge
 
 # Create manifest list with current version
 echo "- Creating manifest for image: ${NAME_IMAGE} with: v${VERSION_OS} tag"
-NAME_IMAGE_AND_TAG="${NAME_IMAGE}:build_${BUILD_ID}"
+NAME_IMAGE_AND_TAG="${NAME_IMAGE}:build_${BUILD_ID_CURRENT}"
 
 create_manifest  $NAME_IMAGE_AND_TAG "$LIST_IMAGE_INCLUDE"
 

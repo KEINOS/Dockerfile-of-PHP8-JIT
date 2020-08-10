@@ -17,6 +17,7 @@
 # Define Basic Variables
 PATH_FILE_VER_INFO='VERSION_IMAGE_BASE.txt'
 NAME_IMAGE_DOCKER='keinos/alpine'
+BUILD_ID=$(date '+%Y%m%d')
 
 # Displays Docker Version info to see Docker Cloud Architecture
 docker version
@@ -43,7 +44,7 @@ fi
 echo 'Newer version found. Updating ...'
 
 # Updating VERSION_IMAGE_BASE.txt
-echo "VERSION_ID=${VERSION_NEW}" > ./$PATH_FILE_VER_INFO
+echo -e "VERSION_ID=${VERSION_NEW}\nBUILD_ID=${BUILD_ID}" > ./$PATH_FILE_VER_INFO
 ./build-image.sh
 if [ $? -ne 0 ]; then
   echo "* Failed update: ${PATH_FILE_VER_INFO}"
@@ -54,8 +55,8 @@ echo "- Updated"
 # Updating git
 echo 'GIT: Committing and pushing to GitHub ...'
 git add . && \
-git commit -m "feat: Alpine v${VERSION_NEW}" && \
-git tag "v${VERSION_NEW}" && \
+git commit -m "feat: Alpine v${VERSION_NEW} Build: ${BUILD_ID}" && \
+git tag "v${VERSION_NEW}(Build:${BUILD_ID})" && \
 git push --tags && \
 git push origin
 if [ $? -ne 0 ]; then
