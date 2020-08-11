@@ -62,7 +62,7 @@ echo '- Updataing repository ...'
 echo 'GIT: Committing and pushing to GitHub ...'
 git add . && \
 git commit -m "feat: Alpine v${VERSION_NEW} Build: ${BUILD_ID_CURRENT}" && \
-git tag "v${VERSION_NEW}(Build:${BUILD_ID_CURRENT})" && \
+git tag "v${VERSION_NEW}-${BUILD_ID_CURRENT}" && \
 git push -f --tags && \
 git push origin -f
 if [ $? -ne 0 ]; then
