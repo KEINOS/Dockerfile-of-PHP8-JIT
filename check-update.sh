@@ -27,44 +27,48 @@ source ./$PATH_FILE_VER_INFO
 echo '- Current version:' ${VERSION_ID:-unknown}
 echo '- Current build ID:' ${BUILD_ID:-unknown}
 
-# Clear all the docker images
+# Clear/delete all the docker images
 docker system prune -f -a
 
 # Pull latest Alpine image
+echo '- Pulling latest Alpine Linux image ...'
 docker pull alpine:latest > /dev/null
 
 # Fetch the latest Alpine version
 VERSION_NEW=$(docker run --rm -i alpine:latest cat /etc/os-release | grep VERSION_ID | sed -e 's/[^0-9\.]//g')
-echo '- Latest version:' $VERSION_NEW
+echo '- Latest Alpine version:' $VERSION_NEW
 
 # Compare
-if [ $VERSION_ID = $VERSION_NEW ] && [ $BUILD_ID = $BUILD_ID_CURRENT ]; then
+[ "$VERSION_ID" = "$VERSION_NEW" ] && [ "$BUILD_ID" = "$BUILD_ID_CURRENT" ] && {
    echo 'No update found. Do nothing.'
    exit 1
-fi
+}
 
 #  Update
 # --------
-echo 'Newer version found. Updating ...'
+echo '- Newer version/Build ID found. Updating ...'
 
 # Updating VERSION_IMAGE_BASE.txt
-echo -e "VERSION_ID=${VERSION_NEW}\nBUILD_ID=${BUILD_ID}" > ./$PATH_FILE_VER_INFO
+echo -e "VERSION_ID=${VERSION_NEW}\nBUILD_ID=${BUILD_ID_CURRENT}" > ./$PATH_FILE_VER_INFO
 ./build-image.sh
 if [ $? -ne 0 ]; then
   echo "* Failed update: ${PATH_FILE_VER_INFO}"
   exit 1
 fi
-echo "- Updated"
+echo "Updated"
 
 # Updating git
+echo '- Updataing repository ...'
 echo 'GIT: Committing and pushing to GitHub ...'
 git add . && \
-git commit -m "feat: Alpine v${VERSION_NEW} Build: ${BUILD_ID}" && \
-git tag "v${VERSION_NEW}(Build:${BUILD_ID})" && \
-git push --tags && \
-git push origin
+git commit -m "feat: Alpine v${VERSION_NEW} Build: ${BUILD_ID_CURRENT}" && \
+git tag "v${VERSION_NEW}(Build:${BUILD_ID_CURRENT})" && \
+git push -f --tags && \
+git push origin -f
 if [ $? -ne 0 ]; then
   echo '* Failed commit and push'
   exit 1
 fi
 echo "- Pushed: GitHub"
+
+echo 'Done.'

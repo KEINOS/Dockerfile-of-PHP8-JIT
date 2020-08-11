@@ -37,8 +37,7 @@ HEREDOC
 # -----------------------------------------------------------------------------
 NAME_IMAGE='keinos/php8-jit'
 PATH_FILE_VER_INFO='VERSION_IMAGE_BASE.txt'
-NAME_BUILDER=mybuilder
-BUILD_ID_CURRENT=$(date '+%Y%m%d')
+NAME_BUILDER=myPhpBuilder
 
 # -----------------------------------------------------------------------------
 #  Functions
@@ -156,18 +155,20 @@ echo "- Creating manifest for image: ${NAME_IMAGE} with: latest tag"
 NAME_IMAGE_AND_TAG="${NAME_IMAGE}:latest"
 create_manifest  $NAME_IMAGE_AND_TAG "$LIST_IMAGE_INCLUDE"
 
+# Rewrite variant of "latest" tag for arm 6 and 7 compatibility
 rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv6 v6l
 rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv7 v7l
 
 docker manifest inspect $NAME_IMAGE_AND_TAG && \
 docker manifest push $NAME_IMAGE_AND_TAG --purge
 
-# Create manifest list with current version
-echo "- Creating manifest for image: ${NAME_IMAGE} with: v${VERSION_OS} tag"
-NAME_IMAGE_AND_TAG="${NAME_IMAGE}:build_${BUILD_ID_CURRENT}"
+# Create manifest list with current build ID
+echo "- Creating manifest for image: ${NAME_IMAGE} with: build_${BUILD_ID} tag"
+NAME_IMAGE_AND_TAG="${NAME_IMAGE}:build_${BUILD_ID}"
 
 create_manifest  $NAME_IMAGE_AND_TAG "$LIST_IMAGE_INCLUDE"
 
+# Rewrite variant of build ID tag for arm 6 and 7 compatibility
 rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv6 v6l
 rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv7 v7l
 
