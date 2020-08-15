@@ -4,13 +4,13 @@
 
 # PHP8.0 with JIT Enabled on Docker
 
-This is a PHP8-dev (php 8.0.0-alpha) Docker image with **JIT feature enabled**.
+This is a PHP8-dev (php 8.0.0-beta) Docker image with **JIT feature enabled** built from [official source](https://github.com/php/php-src).
 
 ```bash
 docker pull keinos/php8-jit:latest
 ```
 
-- The `latest` tag image **works on: ARM v6l, ARM v7l, ARM64, x86_64 (AMD/Intel) architectures**.
+- The `latest` tag image **works on: ARM v6l, ARM v7l, ARM64 and x86_64 (AMD/Intel) architectures**.
 
 <details><summary>Image Informations and notes</summary><div><br>
 
