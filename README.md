@@ -12,7 +12,7 @@ docker pull keinos/php8-jit:latest
 
 - The `latest` tag image **works on: ARM v6l, ARM v7l, ARM64, x86_64 (AMD/Intel) architectures**.
 
-<details><summary>Image Information</summary><div><br>
+<details><summary>Image Informations and notes</summary><div><br>
 
 - Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub.
   - Date built: See the version badge above.
@@ -24,7 +24,7 @@ docker pull keinos/php8-jit:latest
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
 
 - Image Info
-  - Build Frequency: Every update of Alpine Docker image.
+  - Build Frequency: Mostly every update of Alpine Docker image.
   - Base Image: Alpine Linux v3.12.0 (keinos/alpine:latest)
   - Image Repo: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
   - Source Repo: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
@@ -40,6 +40,8 @@ docker pull keinos/php8-jit:latest
     - language = Japanese
   - GD: enabled
   - [phpinfo()](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-phpinfo.txt)
+  - Constant `GLOB_BRACE` flag for `glob` is not available.
+    - See: [Notes](https://www.php.net/manual/en/function.glob.php) | glob @ PHP manual
 
 ---
 
