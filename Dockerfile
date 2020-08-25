@@ -1,5 +1,5 @@
-ARG NAME_BASE
-ARG NAME_TAG
+ARG NAME_BASE=keinos/alpine
+ARG NAME_TAG=latest
 
 FROM ${NAME_BASE}:${NAME_TAG}
 # =============================================================================
@@ -79,7 +79,7 @@ RUN set -xe; \
 
 COPY scripts/docker-php-source /usr/local/bin/
 
-RUN set -xe \
+RUN set -eux \
     && apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
 # gd-dev will install:
@@ -118,12 +118,29 @@ RUN set -xe \
         --with-config-file-path="$PHP_INI_DIR" \
         --with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
         \
+# make sure invalid --configure-flags are fatal errors instead of just warnings
+        --enable-option-checking=fatal \
+        \
 # https://github.com/docker-library/php/issues/439
         --with-mhash \
+# --enable-ftp is included here because ftp_ssl_connect() needs ftp to be
+# compiled statically (see https://github.com/docker-library/php/issues/236)
+        --enable-ftp \
+# --enable-mbstring is included here because otherwise there's no way to get pecl
+# to use it properly (see https://github.com/docker-library/php/issues/195)
+        --enable-mbstring \
+# --enable-mysqlnd is included here because it's harder to compile after the fact
+# than extensions are
+# (since it's a plugin for several extensions, not an extension in itself)
+        --enable-mysqlnd \
 # https://wiki.php.net/rfc/argon2_password_hash (7.2+)
         --with-password-argon2 \
 # https://wiki.php.net/rfc/libsodium
         --with-sodium=shared \
+# always build against system sqlite3
+# (https://github.com/php/php-src/commit/6083a387a81dbbd66d6316a3a12a63f06d5f7109)
+        --with-pdo-sqlite=/usr \
+        --with-sqlite3=/usr \
 # https://stackoverflow.com/a/43949863/8367711
         --with-openssl=/usr \
         --with-system-ciphers \
@@ -141,17 +158,10 @@ RUN set -xe \
         --with-libedit \
         --with-zlib \
         \
-# make sure invalid --configure-flags are fatal errors instead of just warnings
-        --enable-option-checking=fatal \
-# --enable-ftp is included here because ftp_ssl_connect() needs ftp to be
-# compiled statically (see https://github.com/docker-library/php/issues/236)
-        --enable-ftp \
-# --enable-mysqlnd is included here because it's harder to compile after the
-# fact than extensions are
-# (since it's a plugin for several extensions, not an extension in itself)
-        --enable-mysqlnd \
-# https://www.php.net/manual/ja/mbstring.installation.php
-        --enable-mbstring \
+# in PHP 7.4+, the pecl/pear installers are officially deprecated (requiring an
+# explicit "--with-pear") and will be removed in PHP 8+;
+# see also https://github.com/docker-library/php/issues/846#issuecomment-505638494
+        --with-pear \
         \
         --enable-soap \
         --enable-pcntl \
@@ -162,15 +172,15 @@ RUN set -xe \
 # https://manpages.debian.org/stretch/libpcre3-dev/pcrejit.3.en.html#AVAILABILITY_OF_JIT_SUPPORT
         $(test "$gnuArch" = 's390x-linux-gnu' && echo '--without-pcre-jit') \
         \
-        $PHP_EXTRA_CONFIGURE_ARGS \
+        ${PHP_EXTRA_CONFIGURE_ARGS:-} \
     && make -j "$(nproc)" \
     && find -type f -name '*.a' -delete \
     && make install \
     && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
     && make clean \
     \
-# https://github.com/docker-library/php/issues/692 (copy default example
-# "php.ini" files somewhere easily discoverable)
+# https://github.com/docker-library/php/issues/692 (copy default example "php.ini" files
+# somewhere easily discoverable)
     && cp -v php.ini-* "$PHP_INI_DIR/" \
     \
     && cd / \
@@ -186,7 +196,12 @@ RUN set -xe \
     \
     && apk del --no-network .build-deps \
     \
-    && rm -rf /tmp/pear ~/.pearrc
+# update pecl channel definitions https://github.com/docker-library/php/issues/443
+    && pecl update-channels \
+    && rm -rf /tmp/pear ~/.pearrc \
+# smoke test
+    && php --version \
+    && pecl help version
 
 COPY scripts/docker-php-ext-* scripts/docker-php-entrypoint /usr/local/bin/
 

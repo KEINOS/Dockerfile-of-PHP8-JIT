@@ -1,9 +1,10 @@
 phpinfo()
 PHP Version => 8.0.0-dev
 
-System => Linux d42d9b7d1327 4.19.76-linuxkit #1 SMP Fri Apr 3 15:53:26 UTC 2020 x86_64
-Build Date => May 21 2020 21:07:13
-Configure Command =>  './configure'  '--build=x86_64-linux-musl' '--with-config-file-path=/usr/local/etc/php' '--with-config-file-scan-dir=/usr/local/etc/php/conf.d' '--with-mhash' '--with-password-argon2' '--with-sodium=shared' '--with-openssl=/usr' '--with-system-ciphers' '--with-ffi' '--enable-gd' '--with-external-gd' '--with-webp' '--with-jpeg' '--with-xpm' '--with-freetype' '--with-curl' '--with-libedit' '--with-zlib' '--enable-option-checking=fatal' '--enable-ftp' '--enable-mysqlnd' '--enable-mbstring' '--enable-soap' '--enable-pcntl' '--enable-opcache' '--enable-sockets' 'build_alias=x86_64-linux-musl'
+System => Linux dab142ec849f 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64
+Build Date => Aug 25 2020 14:51:37
+Build System => Linux buildkitsandbox 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 GNU/Linux
+Configure Command =>  './configure'  '--build=x86_64-linux-musl' '--with-config-file-path=/usr/local/etc/php' '--with-config-file-scan-dir=/usr/local/etc/php/conf.d' '--enable-option-checking=fatal' '--with-mhash' '--enable-ftp' '--enable-mbstring' '--enable-mysqlnd' '--with-password-argon2' '--with-sodium=shared' '--with-pdo-sqlite=/usr' '--with-sqlite3=/usr' '--with-openssl=/usr' '--with-system-ciphers' '--with-ffi' '--enable-gd' '--with-external-gd' '--with-webp' '--with-jpeg' '--with-xpm' '--with-freetype' '--with-curl' '--with-libedit' '--with-zlib' '--with-pear' '--enable-soap' '--enable-pcntl' '--enable-opcache' '--enable-sockets' 'build_alias=x86_64-linux-musl'
 Server API => Command Line Interface
 Virtual Directory Support => disabled
 Configuration File (php.ini) Path => /usr/local/etc/php
@@ -13,11 +14,11 @@ Additional .ini files parsed => /usr/local/etc/php/conf.d/docker-php-enable-jit.
 /usr/local/etc/php/conf.d/docker-php-enable-mb.ini,
 /usr/local/etc/php/conf.d/docker-php-ext-sodium.ini
 
-PHP API => 20190128
-PHP Extension => 20190128
-Zend Extension => 420190128
-Zend Extension Build => API420190128,NTS
-PHP Extension Build => API20190128,NTS
+PHP API => 20200804
+PHP Extension => 20200804
+Zend Extension => 420200804
+Zend Extension Build => API420200804,NTS
+PHP Extension Build => API20200804,NTS
 Debug Build => no
 Thread Safety => disabled
 Zend Signal Handling => enabled
@@ -69,7 +70,7 @@ error_log => no value => no value
 error_prepend_string => no value => no value
 error_reporting => no value => no value
 expose_php => On => On
-extension_dir => /usr/local/lib/php/extensions/no-debug-non-zts-20190128 => /usr/local/lib/php/extensions/no-debug-non-zts-20190128
+extension_dir => /usr/local/lib/php/extensions/no-debug-non-zts-20200804 => /usr/local/lib/php/extensions/no-debug-non-zts-20200804
 file_uploads => On => On
 hard_timeout => 2 => 2
 highlight.comment => <font style="color: #FF8000">#FF8000</font> => <font style="color: #FF8000">#FF8000</font>
@@ -82,7 +83,7 @@ ignore_repeated_errors => Off => Off
 ignore_repeated_source => Off => Off
 ignore_user_abort => Off => Off
 implicit_flush => On => On
-include_path => .: => .:
+include_path => .:/usr/local/lib/php => .:/usr/local/lib/php
 input_encoding => no value => no value
 internal_encoding => no value => no value
 log_errors => Off => Off
@@ -131,6 +132,7 @@ zend.assertions => 1 => 1
 zend.detect_unicode => On => On
 zend.enable_gc => On => On
 zend.exception_ignore_args => Off => Off
+zend.exception_string_param_max_len => 15 => 15
 zend.multibyte => On => On
 zend.script_encoding => UTF-8 => UTF-8
 zend.signal_check => Off => Off
@@ -142,7 +144,7 @@ ctype functions => enabled
 curl
 
 cURL support => enabled
-cURL Information => 7.67.0
+cURL Information => 7.69.1
 Age => 5
 Features
 AsynchDNS => Yes
@@ -231,8 +233,8 @@ FTPS support => enabled
 gd
 
 GD Support => enabled
-GD headers Version => 2.2.5
-GD library Version => 2.2.5
+GD headers Version => 2.3.0
+GD library Version => 2.3.0
 FreeType Support => enabled
 FreeType Linkage => with freetype
 GIF Read Support => enabled
@@ -289,7 +291,7 @@ libmbfl version => 1.3.2
 mbstring extension makes use of "streamable kanji code filter and converter", which is distributed under the GNU Lesser General Public License version 2.1.
 
 Multibyte (japanese) regex support => enabled
-Multibyte regex (oniguruma) version => 6.9.4
+Multibyte regex (oniguruma) version => 6.9.5
 
 Directive => Local Value => Master Value
 mbstring.detect_order => no value => no value
@@ -338,8 +340,8 @@ pcntl support => enabled
 pcre
 
 PCRE (Perl Compatible Regular Expressions) Support => enabled
-PCRE Library Version => 10.34 2019-11-21
-PCRE Unicode Version => 12.1.0
+PCRE Library Version => 10.35 2020-05-09
+PCRE Unicode Version => 13.0.0
 PCRE JIT Support => enabled
 PCRE JIT Target => x86 64bit (little endian + unaligned)
 
@@ -356,7 +358,7 @@ PDO drivers => sqlite
 pdo_sqlite
 
 PDO Driver for SQLite 3.x => enabled
-SQLite Library => 3.30.1
+SQLite Library => 3.32.1
 
 Phar
 
@@ -446,7 +448,7 @@ Soap Server => enabled
 Directive => Local Value => Master Value
 soap.wsdl_cache => 1 => 1
 soap.wsdl_cache_dir => /tmp => /tmp
-soap.wsdl_cache_enabled => 1 => 1
+soap.wsdl_cache_enabled => On => On
 soap.wsdl_cache_limit => 5 => 5
 soap.wsdl_cache_ttl => 86400 => 86400
 
@@ -469,10 +471,10 @@ Classes => AppendIterator, ArrayIterator, ArrayObject, BadFunctionCallException,
 sqlite3
 
 SQLite3 support => enabled
-SQLite Library => 3.30.1
+SQLite Library => 3.32.1
 
 Directive => Local Value => Master Value
-sqlite3.defensive => 1 => 1
+sqlite3.defensive => On => On
 sqlite3.extension_dir => no value => no value
 
 standard
@@ -481,12 +483,12 @@ Dynamic Library Support => enabled
 Path to sendmail => /usr/sbin/sendmail -t -i
 
 Directive => Local Value => Master Value
-assert.active => 1 => 1
-assert.bail => 0 => 0
+assert.active => On => On
+assert.bail => Off => Off
 assert.callback => no value => no value
-assert.exception => 0 => 0
-assert.warning => 1 => 1
-auto_detect_line_endings => 0 => 0
+assert.exception => On => On
+assert.warning => On => On
+auto_detect_line_endings => Off => Off
 default_socket_timeout => 60 => 60
 from => no value => no value
 session.trans_sid_hosts => no value => no value
@@ -525,11 +527,11 @@ Startup => OK
 Shared memory model => mmap
 Cache hits => 0
 Cache misses => 0
-Used memory => 9241584
-Free memory => 124976144
+Used memory => 9249776
+Free memory => 124967952
 Wasted memory => 0
-Interned Strings Used memory => 273944
-Interned Strings Free memory => 6017064
+Interned Strings Used memory => 277752
+Interned Strings Free memory => 6013256
 Cached scripts => 0
 Cached keys => 0
 Max keys => 16229
@@ -562,8 +564,11 @@ opcache.jit_hot_func => 127 => 127
 opcache.jit_hot_loop => 64 => 64
 opcache.jit_hot_return => 8 => 8
 opcache.jit_hot_side_exit => 8 => 8
+opcache.jit_max_exit_counters => 8192 => 8192
 opcache.jit_max_loops_unroll => 8 => 8
-opcache.jit_max_recursion_unroll => 2 => 2
+opcache.jit_max_polymorphic_calls => 2 => 2
+opcache.jit_max_recursive_calls => 2 => 2
+opcache.jit_max_recursive_returns => 2 => 2
 opcache.jit_max_root_traces => 1024 => 1024
 opcache.jit_max_side_traces => 128 => 128
 opcache.jit_prof_threshold => 0.005 => 0.005
@@ -609,7 +614,7 @@ Module Name
 Environment
 
 Variable => Value
-HOSTNAME => d42d9b7d1327
+HOSTNAME => dab142ec849f
 PHP_INI_DIR => /usr/local/etc/php
 SHLVL => 1
 HOME => /home/www-data
@@ -625,7 +630,7 @@ PWD => /
 PHP Variables
 
 Variable => Value
-$_SERVER['HOSTNAME'] => d42d9b7d1327
+$_SERVER['HOSTNAME'] => dab142ec849f
 $_SERVER['PHP_INI_DIR'] => /usr/local/etc/php
 $_SERVER['SHLVL'] => 1
 $_SERVER['HOME'] => /home/www-data
@@ -642,14 +647,14 @@ $_SERVER['SCRIPT_NAME'] =>
 $_SERVER['SCRIPT_FILENAME'] => 
 $_SERVER['PATH_TRANSLATED'] => 
 $_SERVER['DOCUMENT_ROOT'] => 
-$_SERVER['REQUEST_TIME_FLOAT'] => 1590112011.0646
-$_SERVER['REQUEST_TIME'] => 1590112011
+$_SERVER['REQUEST_TIME_FLOAT'] => 1598335071.4254
+$_SERVER['REQUEST_TIME'] => 1598335071
 $_SERVER['argv'] => Array
 (
 )
 
 $_SERVER['argc'] => 0
-$_ENV['HOSTNAME'] => d42d9b7d1327
+$_ENV['HOSTNAME'] => dab142ec849f
 $_ENV['PHP_INI_DIR'] => /usr/local/etc/php
 $_ENV['SHLVL'] => 1
 $_ENV['HOME'] => /home/www-data

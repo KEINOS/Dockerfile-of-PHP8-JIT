@@ -16,10 +16,30 @@
 
 # Define Basic Variables
 PATH_FILE_VER_INFO='VERSION_IMAGE_BASE.txt'
-NAME_IMAGE_DOCKER='keinos/alpine'
+PATH_FILE_PHP_INFO='info-phpinfo.txt'
+PATH_FILE_EXT_INFO='info-get_loaded_extensions.txt'
+NAME_IMAGE_DOCKER_LATEST='keinos/php8-jit:latest'
 BUILD_ID=$(date '+%Y%m%d')
 
-# Displays Docker Version info to see Docker Cloud Architecture
+usage() {
+  echo "Options"
+  echo
+  echo "-h  --help   This help."
+  echo "-f  --force  Update even Alpine's version are the same."
+  echo
+}
+
+update_force=
+case "$1" in
+force)
+  update_force=1
+  ;;
+*)
+  update_force=0
+  ;;
+esac
+
+# Displays Docker Version info to see them in Docker Cloud
 docker version
 
 # Load current version info
@@ -27,44 +47,60 @@ source ./$PATH_FILE_VER_INFO
 echo '- Current version:' ${VERSION_ID:-unknown}
 echo '- Current build ID:' ${BUILD_ID:-unknown}
 
-# Clear all the docker images
+# Clear all the docker images and containers for stable build
 docker system prune -f -a
 
 # Pull latest Alpine image
-docker pull alpine:latest > /dev/null
+docker pull alpine:latest >/dev/null
 
 # Fetch the latest Alpine version
 VERSION_NEW=$(docker run --rm -i alpine:latest cat /etc/os-release | grep VERSION_ID | sed -e 's/[^0-9\.]//g')
 echo '- Latest version:' $VERSION_NEW
 
-# Compare
-if [ $VERSION_ID = $VERSION_NEW ]; then
-   echo 'No update found. Do nothing.'
-   exit 1
-fi
+[ "$update_force" -ne 0 ] && {
+  msg_update='Updataing ...'
+} || {
+  # Compare
+  if [ $VERSION_ID = $VERSION_NEW ]; then
+    echo 'No update found. Do nothing.'
+    usage
+    exit 0
+  else
+    msg_update='Newer version found. Updating ...'
+  fi
+}
 
+# -----------------------------------------------------------------------------
 #  Update
-# --------
-echo 'Newer version found. Updating ...'
+# -----------------------------------------------------------------------------
+echo $msg_update
 
 # Updating VERSION_IMAGE_BASE.txt
-echo -e "VERSION_ID=${VERSION_NEW}\nBUILD_ID=${BUILD_ID}" > ./$PATH_FILE_VER_INFO
+echo -e "VERSION_ID=${VERSION_NEW}\nBUILD_ID=${BUILD_ID}" >./$PATH_FILE_VER_INFO
 ./build-image.sh
 if [ $? -ne 0 ]; then
-  echo "* Failed update: ${PATH_FILE_VER_INFO}"
+  echo >&2 "* Failed update: ${PATH_FILE_VER_INFO}"
   exit 1
 fi
 echo "- Updated"
 
+# Updating phpinfo results
+docker run --rm $NAME_IMAGE_DOCKER_LATEST php -i >./$PATH_FILE_PHP_INFO
+
+# Updating loaded extension modules by default
+docker run --rm $NAME_IMAGE_DOCKER_LATEST php -m >./$PATH_FILE_EXT_INFO
+
+varsion_php=$(docker run --rm keinos/php8-jit:latest php -r 'echo phpversion();')
+
 # Updating git
 echo 'GIT: Committing and pushing to GitHub ...'
-git add . && \
-git commit -m "feat: Alpine v${VERSION_NEW} Build: ${BUILD_ID}" && \
-git tag "v${VERSION_NEW}(Build:${BUILD_ID})" && \
-git push --tags && \
-git push origin
+git add . &&
+  git commit -m "feat: Alpine v${VERSION_NEW} Build: ${BUILD_ID}" &&
+  git tag "${varsion_php:-8.0.0-dev}-build-${BUILD_ID}" &&
+  git push --tags &&
+  git push origin
 if [ $? -ne 0 ]; then
-  echo '* Failed commit and push'
+  echo >&2 '* Failed commit and push'
   exit 1
 fi
 echo "- Pushed: GitHub"

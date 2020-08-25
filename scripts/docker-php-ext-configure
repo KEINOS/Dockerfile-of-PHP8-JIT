@@ -16,7 +16,7 @@ if [ -z "$srcExists" ]; then
 	touch /usr/src/php/.docker-delete-me
 fi
 
-cd /usr/src/php/ext
+cd /usr/src/php/php-src-master/ext
 
 usage() {
 	echo "usage: $0 ext-name [configure flags]"
@@ -66,4 +66,4 @@ fi
 
 cd "$ext"
 phpize
-./configure "$@"
+./configure --enable-option-checking=fatal "$@"
