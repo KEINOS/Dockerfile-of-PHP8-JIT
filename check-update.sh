@@ -90,11 +90,13 @@ docker run --rm $NAME_IMAGE_DOCKER_LATEST php -i >./$PATH_FILE_PHP_INFO
 # Updating loaded extension modules by default
 docker run --rm $NAME_IMAGE_DOCKER_LATEST php -m >./$PATH_FILE_EXT_INFO
 
+varsion_php=$(docker run --rm keinos/php8-jit:latest php -r 'echo phpversion();')
+
 # Updating git
 echo 'GIT: Committing and pushing to GitHub ...'
 git add . &&
   git commit -m "feat: Alpine v${VERSION_NEW} Build: ${BUILD_ID}" &&
-  git tag "v${VERSION_NEW}(Build:${BUILD_ID})" &&
+  git tag "${varsion_php:-8.0.0-dev}-build-${BUILD_ID}" &&
   git push --tags &&
   git push origin
 if [ $? -ne 0 ]; then
