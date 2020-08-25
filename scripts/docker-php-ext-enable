@@ -1,10 +1,11 @@
 #!/bin/sh
 set -e
 
-extDir="$(php -r 'echo ini_get("extension_dir");')"
+extDir="$(php -d 'display_errors=stderr' -r 'echo ini_get("extension_dir");')"
 cd "$extDir"
 
 usage() {
+	cd /usr/src/php/php-src-master/ext
 	echo "usage: $0 [options] module-name [module-name ...]"
 	echo "   ie: $0 gd mysqli"
 	echo "       $0 pdo pdo_mysql"
@@ -94,7 +95,7 @@ for module in $modules; do
 
 	ext="$(basename "$module")"
 	ext="${ext%.*}"
-	if php -r 'exit(extension_loaded("'"$ext"'") ? 0 : 1);'; then
+	if php -d 'display_errors=stderr' -r 'exit(extension_loaded("'"$ext"'") ? 0 : 1);'; then
 		# this isn't perfect, but it's better than nothing
 		# (for example, 'opcache.so' presents inside PHP as 'Zend OPcache', not 'opcache')
 		echo >&2
@@ -103,7 +104,15 @@ for module in $modules; do
 		continue
 	fi
 
-	ini="$PHP_INI_DIR/conf.d/${iniName:-"docker-php-ext-$ext.ini"}"
+	case "$iniName" in
+		/*)
+			# allow an absolute path
+			ini="$iniName"
+			;;
+		*)
+			ini="$PHP_INI_DIR/conf.d/${iniName:-"docker-php-ext-$ext.ini"}"
+			;;
+	esac
 	if ! grep -q "$line" "$ini" 2>/dev/null; then
 		echo "$line" >> "$ini"
 	fi

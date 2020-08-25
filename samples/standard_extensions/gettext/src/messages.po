@@ -1,0 +1,19 @@
+# Sample Dictionary For GetText.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: SampleDic 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-24 12:03+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: KEINOS\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: sample.php:13
+msgid "greeting"
+msgstr ""

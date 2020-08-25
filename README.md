@@ -29,6 +29,10 @@ docker pull keinos/php8-jit:latest
   - Image Repo: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
   - Source Repo: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
 
+- Path Info
+  - Configuration File (php.ini) Path: /usr/local/etc/php/conf.d
+  - Extension File Path: /usr/local/lib/php/extensions
+
 - Settings to be noted:
   - Default user: `www-data`
   - Modules/Extensions:
@@ -62,7 +66,7 @@ Interactive shell
 
 php > echo phpversion();
 8.0.0-dev
-php > 
+php >
 php > exit
 $
 ```
@@ -79,7 +83,7 @@ $ docker run --rm \
 >   keinos/php8-jit \
 >   php test.php
 Hello, World!
-$ 
+$
 ```
 
 ```shellsession
@@ -96,25 +100,58 @@ Zend Engine v4.0.0-dev, Copyright (c) Zend Technologies
 test.php
 /app $ php test.php
 Hello, World!
-/app $ 
+/app $
 /app $ exit
 $
 ```
 
+## Advanced Usage
+
 ### Installing Extensions
 
-To instal PHP extensions use `docker-php-ext-install` command. This will enable the extension as well.
+To instal [PHP extensions](https://github.com/php/php-src/tree/master/ext) use `docker-php-ext-install` command. This will enable the extension as well.
 
 - Dockerfile sample to install `sockets` extension.
 
   ```Dockerfile
   FROM keinos/php8-jit:latest
-  
+
+  # You need a root access to install
+  USER root
+
   RUN docker-php-ext-install sockets
+
+  # Switch back to default user
+  USER www-data
+
   ```
 
 - Available extensions to install
   - [php-src/tree/master/ext](https://github.com/php/php-src/tree/master/ext) | PHP @ GitHub
+
+### Installing PECL Packages
+
+The [PECL](https://pecl.php.net/) command is included. (Since build-20200823)
+
+But as an alternative, you can use `docker-php-ext-pecl install`
+
+- Sample of installing [YAML Functions](https://www.php.net/manual/en/ref.yaml.php) from PECL
+
+  ```Dockerfile
+  FROM keinos/php8-jit:latest
+
+  # You need a root access to compile and install packages
+  USER root
+
+  RUN \
+      # Install dependencies for YAML
+      apk --no-cache add yaml-dev && \
+      # Install PECL from source
+      docker-php-ext-pecl install yaml
+
+  # Switch back to default user
+  USER www-data
+  ```
 
 ## Perfomance Comparison
 

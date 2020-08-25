@@ -29,8 +29,8 @@ function runTest(){
   name_image=$1
   name_test=$2
   docker run --rm \
-    -v $(pwd)/test:/usr/src/app \
-    -w /usr/src/app \
+    -v $(pwd)/bench:/app \
+    -w /app \
     $name_image \
     php $name_test
   return $?

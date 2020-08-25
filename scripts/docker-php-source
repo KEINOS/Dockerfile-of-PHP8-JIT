@@ -14,12 +14,28 @@ usage() {
 	echo
 }
 
+function echoAsOneLine() {
+    counter=0
+    interval=100
+    while read line; do
+        if [ $((counter % interval)) -eq 0 ]; then
+            printf '\r%*s\r' ${lenLine:-${#line}}
+            printf "%s" $line
+            lenLine=${#line}
+        fi
+        counter=$((counter + 1))
+    done
+    printf '\r'
+}
+
 case "$1" in
 	extract)
 		mkdir -p "$dir"
 		if [ ! -f "$dir/.docker-extracted" ]; then
-			unzip /usr/src/php.zip -d "$dir"
-			touch "$dir/.docker-extracted"
+			echo '- Extracting PHP source into ...' $dir
+			unzip /usr/src/php.zip -d "$dir" | echoAsOneLine && \
+			touch "$dir/.docker-extracted" && \
+			echo 'PHP source extracted'
 		fi
 		;;
 
