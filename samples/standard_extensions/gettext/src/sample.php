@@ -2,16 +2,18 @@
 
 function getTextIn(string $text, string $locale)
 {
-    // Set locale as ja_JP
+    // Set locale
     putenv("LC_ALL=${locale}");
     setlocale(LC_ALL, $locale);
 
     // File name of the dictionary
     $domain = "messages";
+
     // Bind the base dir of the dictionaries to the domain
     bindtextdomain($domain, "/app/locale/");
     // Set the default domain
     textdomain($domain);
+
     // Get the according text from the locale dictionary
     return gettext("greeting");
 }
