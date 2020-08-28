@@ -5,7 +5,6 @@ services:
 
 before_install:
     - sudo apt-get update
-    - sudo apt-get -y -q -o Dpkg::Options::="--force-confnew" install docker-engine
     - cd tests && docker build --no-cache -t test:local .
 
 script:
