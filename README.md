@@ -1,6 +1,9 @@
+[![](https://img.shields.io/docker/v/keinos/php8-jit)](https://hub.docker.com/r/keinos/php8-jit/tags "Latest build")
 [![](https://img.shields.io/docker/image-size/keinos/php8-jit?sort=semver)](https://cloud.docker.com/repository/docker/keinos/php8-jit "Docker Image Size (latest semver)")
 [![](https://img.shields.io/docker/pulls/keinos/php8-jit)](https://hub.docker.com/r/keinos/php8-jit "Docker Pulls from Docker Hub")
-[![](https://img.shields.io/docker/v/keinos/php8-jit)](https://hub.docker.com/r/keinos/php8-jit/tags "Latest build")
+[![](https://img.shields.io/github/issues/KEINOS/Dockerfile_of_PHP8-JIT)](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/issues "GitHub issues")
+[![](https://img.shields.io/badge/GitHub-Dockerfile-blue?logo=github)](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT "View the Dockerfile in GitHub")
+[![](https://img.shields.io/badge/dockerhub-Image-blue?logo=docker)](https://hub.docker.com/r/keinos/php8-jit "View image info on DockerHub")
 
 # PHP8.0 with JIT Enabled on Docker
 
@@ -18,34 +21,38 @@ docker pull keinos/php8-jit:latest
   - Date built: See the version badge above.
 - Tags available
   - `latest`: (Works on ARM v6l, ARM v7l, ARM64, x86_64 (AMD/Intel) architectures)
-  - For other tags available to pull [see](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags)
+  - For the other available tags to pull, [see](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags).
 
 - This image is based on:
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
 
 - Image Info
-  - Build Frequency: Mostly every update of Alpine Docker image.
-  - Base Image: Alpine Linux v3.12.0 (keinos/alpine:latest)
+  - Build Frequency: Mostly every update of Alpine Docker image or PHP releases.
+  - Base Image: Alpine Linux from [keinos/alpine:latest](https://hub.docker.com/repository/docker/keinos/alpine)
   - Image Repo: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
   - Source Repo: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
 
 - Path Info
-  - Configuration File (php.ini) Path: /usr/local/etc/php/conf.d
-  - Extension File Path: /usr/local/lib/php/extensions
+  - Configuration File (php.ini) Path: `usr/local/etc/php/conf.d`
+  - Extension File Path: `/usr/local/lib/php/extensions`
+  - PHP Source Archive: `/usr/src/php.zip` (To extract run `docker-php-source extract`)
+    - To lighten the image, you may delete this file after all.
+  - PHP Source Path (After extraction): `/usr/src/php/php-src-master/`
 
 - Settings to be noted:
+  - `php -i`: [info-phpinfo.txt](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-phpinfo.txt)
+  - `php -m`: [info-get_loaded_extensions.txt](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-get_loaded_extensions.txt)
   - Default user: `www-data`
+  - Constant `GLOB_BRACE` flag for `glob` is not available.
+    - See: [Notes](https://www.php.net/manual/en/function.glob.php) | glob @ PHP manual
   - Modules/Extensions:
     - **JIT**/**FFI**/OPcache/Sodium/PECL: enabled
-    - For more see: [Loaded Extensions](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-get_loaded_extensions.txt)
   - `mbstring`: enabled
     - multibyte = On
     - Encoding = UTF-8 (Both script and internal)
     - language = Japanese
   - GD: enabled
-  - [phpinfo()](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-phpinfo.txt)
-  - Constant `GLOB_BRACE` flag for `glob` is not available.
-    - See: [Notes](https://www.php.net/manual/en/function.glob.php) | glob @ PHP manual
+  - etc.
 
 ---
 
@@ -79,9 +86,8 @@ test.php
 $ # Run script
 $ docker run --rm \
 >   -v $(pwd)/test.php:/app/test.php \
->   -w /app \
 >   keinos/php8-jit \
->   php test.php
+>   php /app/test.php
 Hello, World!
 $
 ```
@@ -105,13 +111,20 @@ Hello, World!
 $
 ```
 
+## Samples
+
+- Sample Dockerfiles: [./samples/](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/tree/php8-jit/samples)
+
 ## Advanced Usage
 
 ### Installing Extensions
 
-To instal [PHP extensions](https://github.com/php/php-src/tree/master/ext) use `docker-php-ext-install` command. This will enable the extension as well.
+To instal [PHP extensions](https://github.com/php/php-src/tree/master/ext) use `docker-php-ext-install` command. (This will enable the extension as well.)
 
-- Dockerfile sample to install `sockets` extension.
+- Available extensions to install
+  - [php-src/tree/master/ext](https://github.com/php/php-src/tree/master/ext) | PHP @ GitHub
+
+- Dockerfile sample to install `gettext` extension.
 
   ```Dockerfile
   FROM keinos/php8-jit:latest
@@ -119,21 +132,22 @@ To instal [PHP extensions](https://github.com/php/php-src/tree/master/ext) use `
   # You need a root access to install
   USER root
 
-  RUN docker-php-ext-install sockets
+  RUN \
+      # Install dependencies for gettext
+      apk --no-cache add gettext-dev && \
+      # Install gettext extension
+      docker-php-ext-install gettext
 
   # Switch back to default user
   USER www-data
 
   ```
 
-- Available extensions to install
-  - [php-src/tree/master/ext](https://github.com/php/php-src/tree/master/ext) | PHP @ GitHub
-
 ### Installing PECL Packages
 
-The [PECL](https://pecl.php.net/) command is included. (Since build-20200823)
+The [PECL](https://pecl.php.net/) command is included. (Since [build-20200825](https://hub.docker.com/r/keinos/php8-jit/tags))
 
-But as an alternative, you can use `docker-php-ext-pecl install`
+But as an alternative, you can use `docker-php-ext-pecl install`.
 
 - Sample of installing [YAML Functions](https://www.php.net/manual/en/ref.yaml.php) from PECL
 
@@ -153,11 +167,11 @@ But as an alternative, you can use `docker-php-ext-pecl install`
   USER www-data
   ```
 
+- **Note:** Some PECL extension packages are not available to install. Mostly the pre-built extensions such as '`json`', '`hash`' and etc.
+
 ## Perfomance Comparison
 
 - [Test Codes](https://github.com/KEINOS/Dockerfile-of-PHP8-JIT/blob/php8-jit/test/)
-
-
 
 Test                    | v5.6.40 | v7.0.33 | v7.1.33 | v7.2.31 | v7.3.18 | v7.4.6 | 8.0.0-dev<br>(JIT Off) | 8.0.0-dev<br>(JIT On)
 :---------------------- | :-----: | :-----: | :-----: | :-----: | :-----: | :----: | :---: | :--: |
