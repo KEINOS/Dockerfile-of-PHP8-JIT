@@ -1,3 +1,4 @@
+[![](https://travis-ci.org/KEINOS/Dockerfile_of_PHP8-JIT.svg?branch=php8-jit)](https://travis-ci.org/KEINOS/Dockerfile_of_PHP8-JIT "Test Build on TravisCI")
 [![](https://img.shields.io/docker/v/keinos/php8-jit)](https://hub.docker.com/r/keinos/php8-jit/tags "Latest build")
 [![](https://img.shields.io/docker/image-size/keinos/php8-jit?sort=semver)](https://cloud.docker.com/repository/docker/keinos/php8-jit "Docker Image Size (latest semver)")
 [![](https://img.shields.io/docker/pulls/keinos/php8-jit)](https://hub.docker.com/r/keinos/php8-jit "Docker Pulls from Docker Hub")
