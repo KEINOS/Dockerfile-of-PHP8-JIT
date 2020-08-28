@@ -1,0 +1,11 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+    - sudo apt-get update
+    - cd tests && docker build --no-cache -t test:local .
+
+script:
+    - docker run test:local

@@ -72,8 +72,19 @@ while true; do
 	esac
 done
 
+# Detect extensions from the command args
 exts=
 for ext; do
+	if [ "hash" = "$ext" ]; then
+		echo >&2 "warning: hash extension is pre-built in PHP. PECL verion is old and not supported."
+		echo >&2 "re-installation skipped: hash"
+		continue
+	fi
+	if [ "json" = "$ext" ]; then
+		echo >&2 "warning: json extension is pre-built in PHP. PECL verion is old and not supported."
+		echo >&2 "re-installation skipped: json"
+		continue
+	fi
 	if [ -z "$ext" ]; then
 		continue
 	fi
@@ -91,6 +102,7 @@ if [ -z "$exts" ]; then
 	exit 1
 fi
 
+# Detect if Alpine Linux
 pm='unknown'
 if [ -e /lib/apk/db/installed ]; then
 	pm='apk'
@@ -102,14 +114,17 @@ if [ "$pm" = 'apk' ]; then
 		if apk info --installed .phpize-deps-configure >/dev/null; then
 			apkDel='.phpize-deps-configure'
 		elif ! apk info --installed .phpize-deps >/dev/null; then
+			echo '- Installing dependencies for PHPize ...'
 			apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS
 			apkDel='.phpize-deps'
 		fi
 	fi
 fi
 
+# Install extensions under /usr/src/php/php-src-master/ext
 popDir="$PWD"
 for ext in $exts; do
+	flag_ext_installed=1
 	cd "$ext"
 	[ -e Makefile ] || docker-php-ext-configure "$ext"
 	make -j"$j"
@@ -118,17 +133,23 @@ for ext in $exts; do
 		-maxdepth 1 \
 		-name '*.so' \
 		-exec basename '{}' ';' |
-		xargs -r docker-php-ext-enable ${iniName:+--ini-name "$iniName"}
+		xargs -r docker-php-ext-enable ${iniName:+--ini-name "$iniName"} &&
+		flag_ext_installed=0
 	make -j"$j" clean
+	[ $flag_ext_installed -eq 0 ] && {
+		echo "${ext} installed"
+	} || {
+		echo >&2 "Failed to install ${ext}"
+	}
 	cd "$popDir"
 done
 
 if [ "$pm" = 'apk' ] && [ -n "$apkDel" ]; then
-	echo 'Deleting temporary apk packages ...'
+	echo '- Deleting temporary apk packages ...'
 	apk del --no-network $apkDel
 fi
 
 if [ -e /usr/src/php/.docker-delete-me ]; then
-	echo 'Deleting extracted PHP source ...'
+	echo '- Deleting extracted PHP source ...'
 	docker-php-source delete
 fi
