@@ -1,4 +1,4 @@
-# Unit Tests for Built Image
+# Unit Tests for The Built Image
 
 ```shellsession
 $ docker build --no-cache -t test:local .
