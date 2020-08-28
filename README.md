@@ -1,10 +1,12 @@
-[![](https://travis-ci.org/KEINOS/Dockerfile_of_PHP8-JIT.svg?branch=php8-jit)](https://travis-ci.org/KEINOS/Dockerfile_of_PHP8-JIT "Test Build on TravisCI")
 [![](https://img.shields.io/docker/v/keinos/php8-jit)](https://hub.docker.com/r/keinos/php8-jit/tags "Latest build")
 [![](https://img.shields.io/docker/image-size/keinos/php8-jit?sort=semver)](https://cloud.docker.com/repository/docker/keinos/php8-jit "Docker Image Size (latest semver)")
 [![](https://img.shields.io/docker/pulls/keinos/php8-jit)](https://hub.docker.com/r/keinos/php8-jit "Docker Pulls from Docker Hub")
 [![](https://img.shields.io/github/issues/KEINOS/Dockerfile_of_PHP8-JIT)](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/issues "GitHub issues")
 [![](https://img.shields.io/badge/GitHub-Dockerfile-blue?logo=github)](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT "View the Dockerfile in GitHub")
 [![](https://img.shields.io/badge/dockerhub-Image-blue?logo=docker)](https://hub.docker.com/r/keinos/php8-jit "View image info on DockerHub")
+
+- [![](https://travis-ci.org/KEINOS/Dockerfile_of_PHP8-JIT.svg?branch=php8-jit)](https://travis-ci.org/KEINOS/Dockerfile_of_PHP8-JIT "Test Build on TravisCI") (Run [unit tests](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/tree/php8-jit/tests) with the built Docker image on Travis CI)
+
 
 # PHP8.0 with JIT Enabled on Docker
 
