@@ -26,7 +26,8 @@ RUN \
     rm composer-setup.php
 
 # Install PHPUnit
-RUN composer require --ignore-platform-reqs phpunit/phpunit && \
+RUN \
+    composer require --ignore-platform-reqs phpunit/phpunit && \
     ./vendor/bin/phpunit --version
 
 ENTRYPOINT [ "/app/vendor/bin/phpunit", "--testdox", "./tests" ]
