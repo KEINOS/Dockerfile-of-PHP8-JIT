@@ -5,6 +5,8 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 use PHPUnit\Framework\TestCase;
 
 /**
+ * RFC: Nullsafe operator
+ *
  * https://wiki.php.net/rfc/nullsafe_operator
  */
 final class NullSafeOperatorTest extends TestCase
