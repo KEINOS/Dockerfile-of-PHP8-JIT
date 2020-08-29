@@ -6,11 +6,11 @@
 #   - php8.0.0 with no JIT enabled
 #   - php8.0.0 with JIT enabled
 
-# Filenames of the tests to run
-list_test=(
-  'test-fibonacci.php'
-  'test-zundoko.php'
-  'test-zend_bench.php'
+# Filenames of the benches to run
+list_bench=(
+  'bench-fibonacci.php'
+  'bench-zundoko.php'
+  'bench-zend_bench.php'
 )
 
 # Docker images to compare. PHP8 with JIT=on will be added later.
@@ -25,14 +25,15 @@ list_image=(
   'keinos/php8-jit:latest'
 )
 
-function runTest(){
+function runBench(){
   name_image=$1
-  name_test=$2
-  docker run --rm \
+  name_bench=$2
+  docker run \
+    --rm \
     -v $(pwd)/bench:/app \
     -w /app \
     $name_image \
-    php $name_test
+    php $name_bench
   return $?
 }
 
@@ -64,12 +65,15 @@ for item in ${list_image[@]}; do
 done
 
 echo '==============='
-echo ' Running Tests '
+echo ' Running benches '
 echo '==============='
 
 for image in ${list_image[@]}; do
   echo '- Image:' $image
-  for test in ${list_test[@]}; do
-    runTest $image $test | awk '{print "\t", $0}'
+  echo
+
+  for bench in ${list_bench[@]}; do
+    runBench $image $bench | awk '{print "\t", $0}'
+    echo
   done
 done

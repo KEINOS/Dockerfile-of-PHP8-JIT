@@ -1,6 +1,6 @@
 <?php
 /**
- * This benchmark script was originaly from:
+ * This benchmark script was originally from:
  *   https://github.com/php/php-src/blob/master/Zend/bench.php
  *
  * Some un-supported functions, such like hrtime(), will be ignored according to the PHP version.

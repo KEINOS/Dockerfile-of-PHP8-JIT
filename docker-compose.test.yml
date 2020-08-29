@@ -1,6 +1,0 @@
-sut:
-  build: .
-  volumes:
-    - ./test:/usr/src/app
-  working_dir: /usr/src/app
-  command: php test-fibonacci.php
