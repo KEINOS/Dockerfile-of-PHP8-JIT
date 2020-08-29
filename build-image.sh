@@ -1,12 +1,10 @@
 #!/bin/bash
 
 cat <<'HEREDOC'
-
-NOTE: Run check-update.sh which calls this script.
-
 ===============================================================================
   Local image builder for multiple architectures.
-  Such as ARM v6,v7 (RaspberryPi) and AMD64(macOS, Windows Intel machines)
+  Supporting architectures:
+    ARM v6,v7 (RaspberryPi) and x86_64 (macOS, Windows Intel/AMD machines)
 ===============================================================================
 This script:
 1. Builds Docker image for ARM v6, ARM v7 and AMD64 (compatible to Intel/x86_64)
