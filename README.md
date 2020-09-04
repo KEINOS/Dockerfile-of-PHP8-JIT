@@ -176,11 +176,11 @@ To instal [PHP extensions](https://github.com/php/php-src/tree/master/ext) use `
 
 ### Installing PECL Packages
 
-The [PECL](https://pecl.php.net/) command is included. (Since [build-20200825](https://hub.docker.com/r/keinos/php8-jit/tags))
+The [PECL](https://pecl.php.net/) command is included. (Since [build-20200825](https://hub.docker.com/r/keinos/php8-jit/tags), Issue [#13](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/issues/13))
 
-But as an alternative, you can use `docker-php-ext-pecl install`.
+But as an alternative, you can use `docker-php-ext-pecl install` to install PECL package from source.
 
-- Sample of installing [YAML Functions](https://www.php.net/manual/en/ref.yaml.php) from PECL
+- Sample of installing [YAML Functions](https://www.php.net/manual/en/ref.yaml.php) of PECL from source.
 
   ```Dockerfile
   FROM keinos/php8-jit:latest
