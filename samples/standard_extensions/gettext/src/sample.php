@@ -15,7 +15,7 @@ function getTextIn(string $text, string $locale)
     textdomain($domain);
 
     // Get the according text from the locale dictionary
-    return gettext("greeting");
+    return gettext($text);
 }
 
 echo getTextIn('greeting', 'en_US'), PHP_EOL;
