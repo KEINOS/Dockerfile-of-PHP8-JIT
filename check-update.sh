@@ -24,8 +24,8 @@ BUILD_ID=$(date '+%Y%m%d')
 usage() {
   echo "Options"
   echo
-  echo "-h  --help   This help."
-  echo "-f  --force  Update even Alpine's version are the same."
+  echo "  help   This help."
+  echo "  force  Update even Alpine's version are the same."
   echo
 }
 
