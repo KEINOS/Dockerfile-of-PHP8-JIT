@@ -1,8 +1,8 @@
 phpinfo()
 PHP Version => 8.0.0-dev
 
-System => Linux dab142ec849f 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64
-Build Date => Aug 25 2020 14:51:37
+System => Linux d4a1991317d7 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64
+Build Date => Sep  4 2020 23:38:07
 Build System => Linux buildkitsandbox 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 GNU/Linux
 Configure Command =>  './configure'  '--build=x86_64-linux-musl' '--with-config-file-path=/usr/local/etc/php' '--with-config-file-scan-dir=/usr/local/etc/php/conf.d' '--enable-option-checking=fatal' '--with-mhash' '--enable-ftp' '--enable-mbstring' '--enable-mysqlnd' '--with-password-argon2' '--with-sodium=shared' '--with-pdo-sqlite=/usr' '--with-sqlite3=/usr' '--with-openssl=/usr' '--with-system-ciphers' '--with-ffi' '--enable-gd' '--with-external-gd' '--with-webp' '--with-jpeg' '--with-xpm' '--with-freetype' '--with-curl' '--with-libedit' '--with-zlib' '--with-pear' '--enable-soap' '--enable-pcntl' '--enable-opcache' '--enable-sockets' 'build_alias=x86_64-linux-musl'
 Server API => Command Line Interface
@@ -181,7 +181,7 @@ curl.cainfo => no value => no value
 date
 
 date/time support => enabled
-timelib version => 2018.03
+timelib version => 2020.02
 "Olson" Timezone Database Version => 2020.1
 Timezone Database => internal
 Default timezone => UTC
@@ -215,7 +215,7 @@ ffi.preload => no value => no value
 fileinfo
 
 fileinfo support => enabled
-libmagic => 537
+libmagic => 539
 
 filter
 
@@ -614,7 +614,7 @@ Module Name
 Environment
 
 Variable => Value
-HOSTNAME => dab142ec849f
+HOSTNAME => d4a1991317d7
 PHP_INI_DIR => /usr/local/etc/php
 SHLVL => 1
 HOME => /home/www-data
@@ -630,7 +630,7 @@ PWD => /
 PHP Variables
 
 Variable => Value
-$_SERVER['HOSTNAME'] => dab142ec849f
+$_SERVER['HOSTNAME'] => d4a1991317d7
 $_SERVER['PHP_INI_DIR'] => /usr/local/etc/php
 $_SERVER['SHLVL'] => 1
 $_SERVER['HOME'] => /home/www-data
@@ -647,14 +647,14 @@ $_SERVER['SCRIPT_NAME'] =>
 $_SERVER['SCRIPT_FILENAME'] => 
 $_SERVER['PATH_TRANSLATED'] => 
 $_SERVER['DOCUMENT_ROOT'] => 
-$_SERVER['REQUEST_TIME_FLOAT'] => 1598335071.4254
-$_SERVER['REQUEST_TIME'] => 1598335071
+$_SERVER['REQUEST_TIME_FLOAT'] => 1599255711.4013
+$_SERVER['REQUEST_TIME'] => 1599255711
 $_SERVER['argv'] => Array
 (
 )
 
 $_SERVER['argc'] => 0
-$_ENV['HOSTNAME'] => dab142ec849f
+$_ENV['HOSTNAME'] => d4a1991317d7
 $_ENV['PHP_INI_DIR'] => /usr/local/etc/php
 $_ENV['SHLVL'] => 1
 $_ENV['HOME'] => /home/www-data

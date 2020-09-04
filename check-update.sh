@@ -78,10 +78,10 @@ echo $msg_update
 # Updating VERSION_IMAGE_BASE.txt
 echo -e "VERSION_ID=${VERSION_NEW}\nBUILD_ID=${BUILD_ID}" >./$PATH_FILE_VER_INFO
 ./build-image.sh
-if [ $? -ne 0 ]; then
+[ $? -ne 0 ] && {
   echo >&2 "* Failed update: ${PATH_FILE_VER_INFO}"
   exit 1
-fi
+}
 echo "- Updated"
 
 # Updating phpinfo results
@@ -99,8 +99,8 @@ git add . &&
   git tag "${varsion_php:-8.0.0-dev}-build-${BUILD_ID}" &&
   git push --tags &&
   git push origin
-if [ $? -ne 0 ]; then
+[ $? -ne 0 ] && {
   echo >&2 '* Failed commit and push'
   exit 1
-fi
+}
 echo "- Pushed: GitHub"
