@@ -21,6 +21,7 @@ list_image=(
   'php:7.2-cli-alpine'
   'php:7.3-cli-alpine'
   'php:7.4-cli-alpine'
+  'php:8.0.0beta2-alpine'
   'akondas/php:8.0-cli-alpine'
   'keinos/php8-jit:latest'
 )
