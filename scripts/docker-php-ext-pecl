@@ -33,7 +33,7 @@ function echoAsOneLine() {
     while read line; do
         if [ $((counter % interval)) -eq 0 ]; then
             printf '\r%*s\r' ${lenLine:-${#line}}
-            printf "%s" $line
+            printf "%s" "${line}"
             lenLine=${#line}
         fi
         counter=$((counter + 1))

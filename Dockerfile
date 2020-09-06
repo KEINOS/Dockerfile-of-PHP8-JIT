@@ -16,14 +16,13 @@ ENV PHPIZE_DEPS \
         libc-dev \
         make \
         pkgconf \
-        re2c
+        re2c \
+        curl \
+        tar
 
 # persistent / runtime deps
 RUN apk add --no-cache \
         ca-certificates \
-        curl \
-        tar \
-        xz \
 # https://github.com/docker-library/php/issues/494
         libressl
 
@@ -63,19 +62,27 @@ ENV PHP_LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 ENV PHP_VERSION 8.0.0
 ENV PHP_URL="https://github.com/php/php-src/archive/master.zip"
 
+# Download PHP source archive and re-archive it to 7zip for a smaller size.
+# https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/issues/16
 RUN set -xe; \
     \
     apk add --no-cache --virtual .fetch-deps \
-        gnupg \
         wget \
+        p7zip \
     ; \
     \
-    mkdir -p /usr/src; \
-    cd /usr/src; \
+    mkdir -p /usr/src/php; \
+    cd  /usr/src\
+    && wget -O php.zip "$PHP_URL" \
+    && unzip -q php.zip -d ./php \
+    && cd php \
+    && 7z a -mmt$(nproc) -mx9 /usr/src/php.7z php-src-master \
+    && cd /usr/src \
+    && 7z x -ophp2 php.7z \
+    && diff -r php php2 || { exit 1; }; \
     \
-    wget -O php.zip "$PHP_URL"; \
-    \
-    apk del --no-network .fetch-deps
+    rm -rf php php2 php.zip \
+    && apk del --purge --no-network .fetch-deps
 
 COPY scripts/docker-php-source /usr/local/bin/
 
@@ -194,7 +201,7 @@ RUN set -eux \
     )" \
     && apk add --no-cache $runDeps \
     \
-    && apk del --no-network .build-deps \
+    && apk del --purge --no-network .build-deps \
     \
 # update pecl channel definitions https://github.com/docker-library/php/issues/443
     && pecl update-channels \
