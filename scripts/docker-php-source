@@ -4,47 +4,35 @@ set -e
 dir=/usr/src/php
 
 usage() {
-	echo "usage: $0 COMMAND"
-	echo
-	echo "Manage php source tarball lifecycle."
-	echo
-	echo "Commands:"
-	echo "   extract  extract php source tarball into directory $dir if not already done."
-	echo "   delete   delete extracted php source located into $dir if not already done."
-	echo
-}
-
-function echoAsOneLine() {
-    counter=0
-    interval=100
-    while read line; do
-        if [ $((counter % interval)) -eq 0 ]; then
-            printf '\r%*s\r' ${lenLine:-${#line}}
-            printf "%s" $line
-            lenLine=${#line}
-        fi
-        counter=$((counter + 1))
-    done
-    printf '\r'
+    echo "usage: $0 COMMAND"
+    echo
+    echo "Manage php source tarball lifecycle."
+    echo
+    echo "Commands:"
+    echo "   extract  extract php source tarball into directory $dir if not already done."
+    echo "   delete   delete extracted php source located into $dir if not already done."
+    echo
 }
 
 case "$1" in
-	extract)
-		mkdir -p "$dir"
-		if [ ! -f "$dir/.docker-extracted" ]; then
-			echo '- Extracting PHP source into ...' $dir
-			unzip /usr/src/php.zip -d "$dir" | echoAsOneLine && \
-			touch "$dir/.docker-extracted" && \
-			echo 'PHP source extracted'
-		fi
-		;;
+    extract)
+        apk add --no-cache --virtual .arch-deps p7zip
+        mkdir -p "$dir"
+        if [ ! -f "$dir/.docker-extracted" ]; then
+            echo '- Extracting PHP source into ...' $dir
+            7z x -o$dir /usr/src/php.7z && \
+            touch "$dir/.docker-extracted" && \
+            echo 'PHP source extracted'
+        fi
+        apk del --purge --no-network .arch-deps
+        ;;
 
-	delete)
-		rm -rf "$dir"
-		;;
+    delete)
+        rm -rf "$dir"
+        ;;
 
-	*)
-		usage
-		exit 1
-		;;
+    *)
+        usage
+        exit 1
+        ;;
 esac
