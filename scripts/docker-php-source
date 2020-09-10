@@ -1,38 +1,93 @@
 #!/bin/sh
 set -e
 
-dir=/usr/src/php
+TAG_RELESED_DEFAULT='8.0.0-dev-build-20200904'
+
+URL_SRC_ARCHIVE="https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/${TAG_RELESED:-$TAG_RELESED_DEFAULT}/php.7z"
+URL_SRC_ARCHIVE_SIGNATURE="https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/${TAG_RELESED:-$TAG_RELESED_DEFAULT}/php.7z.sig"
+URL_PUBKEY_SIGNATURE="https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/${TAG_RELESED:-$TAG_RELESED_DEFAULT}/id_rsa.pkcs8.pub"
+
+name_file_archive='php.7z'
+name_file_archive_sign='php.7z.sig'
+name_file_key_public_pkcs8='id_rsa.pkcs8.pub'
+
+path_dir_src='/usr/src'
+path_dir_src_ext="${path_dir_src}/php"
+
+path_file_archive="${path_dir_src}/${name_file_archive}"
+path_file_archive_sign="${path_dir_src}/${name_file_archive_sign}"
+path_file_key_public_pkcs8="${path_dir_src}/${name_file_key_public_pkcs8}"
 
 usage() {
-    echo "usage: $0 COMMAND"
+    echo "usage: ${0} COMMAND"
     echo
-    echo "Manage php source tarball lifecycle."
+    echo "Manage php source archive lifecycle."
     echo
     echo "Commands:"
-    echo "   extract  extract php source tarball into directory $dir if not already done."
-    echo "   delete   delete extracted php source located into $dir if not already done."
-    echo
+    echo "   extract  extract PHP source archive if not already done."
+    echo "   delete   delete extracted PHP source."
+    echo "   prune    delete extracted PHP source and the cache. (Less image size)"
+}
+
+function download_signature_archive() {
+    [ -f "$path_file_archive_sign" ] || {
+        echo '- Downloading signature of the archive'
+        curl --location --output "$path_file_archive_sign" $URL_SRC_ARCHIVE_SIGNATURE
+    }
+    [ -f "$path_file_key_public_pkcs8" ] || {
+        echo '- Downloading public key of the signature'
+        curl --location --output "$path_file_key_public_pkcs8" $URL_PUBKEY_SIGNATURE
+    }
+}
+
+function verify_src_archive() {
+    download_signature_archive
+    printf '- Verifying archive with the signature ... '
+    echo "pubkey: $path_file_key_public_pkcs8"
+    echo "sign: $path_file_archive_sign"
+    echo "arch: $path_file_archive"
+    libressl dgst -sha256 -verify "$path_file_key_public_pkcs8" -signature "$path_file_archive_sign" "$path_file_archive"
+}
+
+function download_src_archive() {
+    [ -f "$path_file_archive" ] && {
+        echo '- Archive of PHP source found.'
+    } || {
+        echo '- Downloading PHP source archive'
+        curl --location --output "$path_file_archive" $URL_SRC_ARCHIVE
+    }
+    verify_src_archive || {
+        exit 1
+    }
 }
 
 case "$1" in
-    extract)
-        apk add --no-cache --virtual .arch-deps p7zip
-        mkdir -p "$dir"
-        if [ ! -f "$dir/.docker-extracted" ]; then
-            echo '- Extracting PHP source into ...' $dir
-            7z x -o$dir /usr/src/php.7z && \
-            touch "$dir/.docker-extracted" && \
+extract)
+    mkdir -p "$path_dir_src_ext"
+    [ -f "$path_file_archive" ] || {
+        download_src_archive
+    }
+    apk add --no-cache --virtual .arch-deps p7zip
+    if [ ! -f "$path_dir_src_ext/.docker-extracted" ]; then
+        echo '- Extracting PHP source into ...' $path_dir_src_ext
+        7z x -o$path_dir_src_ext /usr/src/php.7z &&
+            touch "$path_dir_src_ext/.docker-extracted" &&
             echo 'PHP source extracted'
-        fi
-        apk del --purge --no-network .arch-deps
-        ;;
+    fi
+    apk del --purge --no-network .arch-deps
+    ;;
 
-    delete)
-        rm -rf "$dir"
-        ;;
+delete)
+    rm -rf "$path_dir_src_ext"
+    ;;
 
-    *)
-        usage
-        exit 1
-        ;;
+prune)
+    rm -rf "$path_dir_src_ext"
+    rm -rf /usr/src/*.pub /usr/src/*
+    ;;
+
+*)
+    usage
+    exit 1
+    ;;
 esac
