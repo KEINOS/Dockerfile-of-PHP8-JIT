@@ -19,31 +19,27 @@ docker pull keinos/php8-jit:latest
 
 <details><summary>Image Informations and notes</summary><div><br>
 
-- Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub.
-  - Date built: See the version badge above.
-- Tags available
-  - `latest`: (Works on ARM v6l, ARM v7l, ARM64, x86_64 (AMD/Intel) architectures)
-  - For the other available tags to pull, [see](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags).
-
-- This image is based on:
+- Based on/inspired by:
   - Document: [How to run PHP 8 with JIT support using Docker](https://arkadiuszkondas.com/how-to-run-php-8-with-jit-support-using-docker/) @ arkadiuszkondas.com
-
+- PHPINFO: [info-phpinfo.txt](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-phpinfo.txt)
+- Modules/Extensions: [info-get_loaded_extensions.txt](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-get_loaded_extensions.txt)
+- Source: Built from the latest `master` branch from [PHP-src](https://github.com/php/php-src) @ GitHub
+- Tags available: [see](https://cloud.docker.com/repository/docker/keinos/php8-jit/tags) @ DockerHub
 - Image Info
   - Build Frequency: Mostly every update of Alpine Docker image or PHP releases.
   - Base Image: Alpine Linux from [keinos/alpine:latest](https://hub.docker.com/repository/docker/keinos/alpine)
+  - Source Repo(Dockerfile): https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
   - Image Repo: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
-  - Source Repo: https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
-
 - Path Info
-  - Configuration File (php.ini) Path: `usr/local/etc/php/conf.d`
-  - Extension File Path: `/usr/local/lib/php/extensions`
-  - PHP Source Archive: `/usr/src/php.zip` (To extract run `docker-php-source extract`)
-    - To lighten the image, you may delete this file after all.
+  - Configuration Files: `usr/local/etc/php/conf.d/` (php.ini)
+  - Extension Files: `/usr/local/lib/php/extensions/`
+  - PHP Source Archive: `/usr/src/php.7z`
   - PHP Source Path (After extraction): `/usr/src/php/php-src-master/`
-
+- Extract/Delete Archived PHP Source
+  - Extract archive: `docker-php-source extract`
+  - Delete extracted source: `docker-php-source delete`
+  - Delete extracted source and cache: `docker-php-source prune`.
 - Settings to be noted:
-  - `php -i`: [info-phpinfo.txt](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-phpinfo.txt)
-  - `php -m`: [info-get_loaded_extensions.txt](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-get_loaded_extensions.txt)
   - Default user: `www-data`
   - Constant `GLOB_BRACE` flag for `glob` is not available.
     - See: [Notes](https://www.php.net/manual/en/function.glob.php) | glob @ PHP manual
@@ -54,7 +50,7 @@ docker pull keinos/php8-jit:latest
     - Encoding = UTF-8 (Both script and internal)
     - language = Japanese
   - GD: enabled
-  - etc.
+  - [etc.](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/info-get_loaded_extensions.txt)
 
 ---
 
@@ -167,7 +163,9 @@ To instal [PHP extensions](https://github.com/php/php-src/tree/master/ext) use `
       # Install dependencies for gettext
       apk --no-cache add gettext-dev && \
       # Install gettext extension
-      docker-php-ext-install gettext
+      docker-php-ext-install gettext && \
+      # Delete PHP source archive cache
+      docker-php-source prune
 
   # Switch back to default user
   USER www-data
@@ -178,7 +176,7 @@ To instal [PHP extensions](https://github.com/php/php-src/tree/master/ext) use `
 
 The [PECL](https://pecl.php.net/) command is included. (Since [build-20200825](https://hub.docker.com/r/keinos/php8-jit/tags), Issue [#13](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/issues/13))
 
-But as an alternative, you can use `docker-php-ext-pecl install` to install PECL package from source.
+But as an alternative, you can use `docker-php-ext-pecl install` to install PECL packages from source.
 
 - Sample of installing [YAML Functions](https://www.php.net/manual/en/ref.yaml.php) of PECL from source.
 
@@ -192,7 +190,9 @@ But as an alternative, you can use `docker-php-ext-pecl install` to install PECL
       # Install dependencies for YAML
       apk --no-cache add yaml-dev && \
       # Install PECL from source
-      docker-php-ext-pecl install yaml
+      docker-php-ext-pecl install yaml svm && \
+      # Delete PHP source archive cache
+      docker-php-source prune
 
   # Switch back to default user
   USER www-data

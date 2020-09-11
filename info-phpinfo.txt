@@ -1,10 +1,10 @@
 phpinfo()
 PHP Version => 8.0.0-dev
 
-System => Linux d4a1991317d7 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64
-Build Date => Sep  4 2020 23:38:07
-Build System => Linux buildkitsandbox 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 GNU/Linux
-Configure Command =>  './configure'  '--build=x86_64-linux-musl' '--with-config-file-path=/usr/local/etc/php' '--with-config-file-scan-dir=/usr/local/etc/php/conf.d' '--enable-option-checking=fatal' '--with-mhash' '--enable-ftp' '--enable-mbstring' '--enable-mysqlnd' '--with-password-argon2' '--with-sodium=shared' '--with-pdo-sqlite=/usr' '--with-sqlite3=/usr' '--with-openssl=/usr' '--with-system-ciphers' '--with-ffi' '--enable-gd' '--with-external-gd' '--with-webp' '--with-jpeg' '--with-xpm' '--with-freetype' '--with-curl' '--with-libedit' '--with-zlib' '--with-pear' '--enable-soap' '--enable-pcntl' '--enable-opcache' '--enable-sockets' 'build_alias=x86_64-linux-musl'
+System => Linux 976f8912c790 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64
+Build Date => Sep 11 2020 13:32:47
+Build System => Linux f125d2de89ff 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 GNU/Linux
+Configure Command =>  './configure'  '--build=x86_64-linux-musl' '--with-config-file-path=/usr/local/etc/php' '--with-config-file-scan-dir=/usr/local/etc/php/conf.d' '--enable-option-checking=fatal' '--with-mhash' '--enable-ftp' '--enable-mbstring' '--enable-mysqlnd' '--with-password-argon2' '--with-sodium=shared' '--with-pdo-sqlite=/usr' '--with-sqlite3=/usr' '--with-openssl=/usr' '--with-system-ciphers' '--with-ffi' '--enable-gd' '--with-external-gd' '--with-webp' '--with-jpeg' '--with-xpm' '--with-freetype' '--with-curl' '--with-libedit' '--with-zlib' '--with-pear' '--enable-soap' '--enable-pcntl' '--enable-opcache' '--enable-sockets' 'build_alias=x86_64-linux-musl' 'CPPFLAGS='
 Server API => Command Line Interface
 Virtual Directory Support => disabled
 Configuration File (php.ini) Path => /usr/local/etc/php
@@ -614,57 +614,78 @@ Module Name
 Environment
 
 Variable => Value
-HOSTNAME => d4a1991317d7
+HOSTNAME => 976f8912c790
 PHP_INI_DIR => /usr/local/etc/php
+URL_SRC_ARCHIVE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200904/php.7z
 SHLVL => 1
 HOME => /home/www-data
+PHP_URL_ORIGINAL => https://github.com/php/php-src/archive/master.zip
+URL_SRC_ARCHIVE_SIGNATURE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200904/php.7z.sig
 PHP_LDFLAGS => -Wl,-O1 -Wl,--hash-style=both -pie
 PHP_CFLAGS => -fstack-protector-strong -fpic -fpie -O2
-PHP_VERSION => 8.0.0
-PHP_CPPFLAGS => -fstack-protector-strong -fpic -fpie -O2
-PHP_URL => https://github.com/php/php-src/archive/master.zip
+PHP_VERSION => 8.0.0-dev
+PHP_CPPFLAGS =>  
+ID_BUILD => build-20200904
+PHP_URL => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/8.0.0-dev-build-20200904/php.7z
 PATH => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-PHPIZE_DEPS => autoconf         dpkg-dev dpkg         file         g++         gcc         libc-dev         make         pkgconf         re2c
+URL_PUBKEY_SIGNATURE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200904/id_rsa.pkcs8.pub
+TAG_RELESED => 8.0.0-dev-build-20200904
+VERSION_PHP => 8.0.0-dev
+PHPIZE_DEPS => autoconf         dpkg-dev dpkg         file         g++         gcc         libc-dev         make         pkgconf         re2c         tar
 PWD => /
 
 PHP Variables
 
 Variable => Value
-$_SERVER['HOSTNAME'] => d4a1991317d7
+$_SERVER['HOSTNAME'] => 976f8912c790
 $_SERVER['PHP_INI_DIR'] => /usr/local/etc/php
+$_SERVER['URL_SRC_ARCHIVE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200904/php.7z
 $_SERVER['SHLVL'] => 1
 $_SERVER['HOME'] => /home/www-data
+$_SERVER['PHP_URL_ORIGINAL'] => https://github.com/php/php-src/archive/master.zip
+$_SERVER['URL_SRC_ARCHIVE_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200904/php.7z.sig
 $_SERVER['PHP_LDFLAGS'] => -Wl,-O1 -Wl,--hash-style=both -pie
 $_SERVER['PHP_CFLAGS'] => -fstack-protector-strong -fpic -fpie -O2
-$_SERVER['PHP_VERSION'] => 8.0.0
-$_SERVER['PHP_CPPFLAGS'] => -fstack-protector-strong -fpic -fpie -O2
-$_SERVER['PHP_URL'] => https://github.com/php/php-src/archive/master.zip
+$_SERVER['PHP_VERSION'] => 8.0.0-dev
+$_SERVER['PHP_CPPFLAGS'] => 
+$_SERVER['ID_BUILD'] => build-20200904
+$_SERVER['PHP_URL'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/8.0.0-dev-build-20200904/php.7z
 $_SERVER['PATH'] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-$_SERVER['PHPIZE_DEPS'] => autoconf         dpkg-dev dpkg         file         g++         gcc         libc-dev         make         pkgconf         re2c
+$_SERVER['URL_PUBKEY_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200904/id_rsa.pkcs8.pub
+$_SERVER['TAG_RELESED'] => 8.0.0-dev-build-20200904
+$_SERVER['VERSION_PHP'] => 8.0.0-dev
+$_SERVER['PHPIZE_DEPS'] => autoconf         dpkg-dev dpkg         file         g++         gcc         libc-dev         make         pkgconf         re2c         tar
 $_SERVER['PWD'] => /
 $_SERVER['PHP_SELF'] => 
 $_SERVER['SCRIPT_NAME'] => 
 $_SERVER['SCRIPT_FILENAME'] => 
 $_SERVER['PATH_TRANSLATED'] => 
 $_SERVER['DOCUMENT_ROOT'] => 
-$_SERVER['REQUEST_TIME_FLOAT'] => 1599255711.4013
-$_SERVER['REQUEST_TIME'] => 1599255711
+$_SERVER['REQUEST_TIME_FLOAT'] => 1599799052.6461
+$_SERVER['REQUEST_TIME'] => 1599799052
 $_SERVER['argv'] => Array
 (
 )
 
 $_SERVER['argc'] => 0
-$_ENV['HOSTNAME'] => d4a1991317d7
+$_ENV['HOSTNAME'] => 976f8912c790
 $_ENV['PHP_INI_DIR'] => /usr/local/etc/php
+$_ENV['URL_SRC_ARCHIVE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200904/php.7z
 $_ENV['SHLVL'] => 1
 $_ENV['HOME'] => /home/www-data
+$_ENV['PHP_URL_ORIGINAL'] => https://github.com/php/php-src/archive/master.zip
+$_ENV['URL_SRC_ARCHIVE_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200904/php.7z.sig
 $_ENV['PHP_LDFLAGS'] => -Wl,-O1 -Wl,--hash-style=both -pie
 $_ENV['PHP_CFLAGS'] => -fstack-protector-strong -fpic -fpie -O2
-$_ENV['PHP_VERSION'] => 8.0.0
-$_ENV['PHP_CPPFLAGS'] => -fstack-protector-strong -fpic -fpie -O2
-$_ENV['PHP_URL'] => https://github.com/php/php-src/archive/master.zip
+$_ENV['PHP_VERSION'] => 8.0.0-dev
+$_ENV['PHP_CPPFLAGS'] => 
+$_ENV['ID_BUILD'] => build-20200904
+$_ENV['PHP_URL'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/8.0.0-dev-build-20200904/php.7z
 $_ENV['PATH'] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-$_ENV['PHPIZE_DEPS'] => autoconf         dpkg-dev dpkg         file         g++         gcc         libc-dev         make         pkgconf         re2c
+$_ENV['URL_PUBKEY_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200904/id_rsa.pkcs8.pub
+$_ENV['TAG_RELESED'] => 8.0.0-dev-build-20200904
+$_ENV['VERSION_PHP'] => 8.0.0-dev
+$_ENV['PHPIZE_DEPS'] => autoconf         dpkg-dev dpkg         file         g++         gcc         libc-dev         make         pkgconf         re2c         tar
 $_ENV['PWD'] => /
 
 PHP License
