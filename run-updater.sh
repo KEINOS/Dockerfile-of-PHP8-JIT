@@ -81,8 +81,7 @@ function update_php_info() {
   echo '- Updating PHP info file'
   name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
   pull_image "$name_image_tmp"
-  docker run --rm "${pull_image}" php -i >$PATH_FILE_PHP_INFO
-  echo '- Writing to file ...'
+  docker run --rm "${name_image_tmp}" php -i >$PATH_FILE_PHP_INFO
 }
 
 function update_php_modules() {
