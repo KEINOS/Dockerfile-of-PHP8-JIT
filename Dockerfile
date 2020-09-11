@@ -8,7 +8,7 @@ FROM ${NAME_IMAGE_BASE}:${NAME_IMAGE_TAG}
 # such as: --build-arg <varname>=<value>
 ARG ID_BUILD='build-20200904'
 ARG VERSION_PHP='8.0.0-dev'
-ARG TAG_RELESED='8.0.0-dev-build-20200904'
+ARG TAG_RELESED='8.0.0-dev-build-20200911'
 
 LABEL \
         MAINTAINER='https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/' \
