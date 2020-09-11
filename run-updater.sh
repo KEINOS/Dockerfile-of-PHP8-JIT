@@ -20,6 +20,17 @@
 #  Functions
 # -----------------------------------------------------------------------------
 
+function build_docker_for_smoke_test() {
+  echo '- Building test image'
+  # The smoke test image will use the default source archive which is defined
+  # in Dockerfile
+  #docker system prune -a -f &&
+    #docker build -t $name_tag_test . &&
+    update_php_info "$name_tag_test" &&
+    update_php_modules "$name_tag_test" &&
+    VERSION_PHP_NEW=$(get_version_php "$name_tag_test")
+}
+
 function commit_push_git() {
   git status | grep 'nothing to commit' && {
     return 0
@@ -27,7 +38,7 @@ function commit_push_git() {
   # Updating git
   echo '- GIT: Committing and pushing to GitHub ...'
   git add . &&
-    git commit -m "feat: Alpine v${VERSION_OS_NEW} Build: ${BUILD_ID}" &&
+    git commit -m "feat: Alpine v${VERSION_OS_NEW} Build: ${ID_BUILD_NEW}" &&
     git tag --force "${TAG_RELEASED_NEW}" &&
     git push --force --tags &&
     git push --force origin
@@ -44,10 +55,15 @@ function get_version_alpine_latest() {
 
 function get_version_php() {
   name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
+  pull_image "$name_image_tmp"
+  docker run --rm $name_image_tmp php -r 'echo phpversion();'
+}
+
+function pull_image() {
+  name_image_tmp="${1}"
   docker images | grep ${name_image_tmp/:*/} >/dev/null || {
     docker pull $name_image_tmp >/dev/null
   }
-  docker run --rm $name_image_tmp php -r 'echo phpversion();'
 }
 
 function update_info_build() {
@@ -62,27 +78,23 @@ EOL
 }
 
 function update_php_info() {
-  docker run --rm "${1:-$NAME_IMAGE_DOCKER_LATEST}" php -i >$PATH_FILE_PHP_INFO
+  echo '- Updating PHP info file'
+  name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
+  pull_image "$name_image_tmp"
+  docker run --rm "${pull_image}" php -i >$PATH_FILE_PHP_INFO
+  echo '- Writing to file ...'
 }
 
 function update_php_modules() {
-  docker run --rm "${1:-$NAME_IMAGE_DOCKER_LATEST}" php -m >$PATH_FILE_EXT_INFO
+  echo '- Updating PHP loaded modules'
+  name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
+  pull_image "$name_image_tmp"
+  docker run --rm "${name_image_tmp}" php -m >$PATH_FILE_EXT_INFO
 }
 
 function update_src_archive() {
   name_tag_test='test:local'
   ./_download-source.sh
-}
-
-function build_docker_for_smoke_test() {
-  echo '- Building test image'
-  # The smoke test image will use the default source archive which is defined
-  # in Dockerfile
-  docker system prune -a -f &&
-    docker build -t $name_tag_test . &&
-    update_php_info "$name_tag_test" &&
-    update_php_modules "$name_tag_test" &&
-    VERSION_PHP_NEW=$(get_version_php "$name_tag_test")
 }
 
 # -----------------------------------------------------------------------------
@@ -157,9 +169,9 @@ msg_update='Updataing ...'
   echo '---------------------------------------------------'
   echo ' Archived date did not match. Updating ...'
 
-  update_src_archive || {
-    exit 1
-  }
+  #update_src_archive || {
+  #  exit 1
+  #}
 
   build_docker_for_smoke_test || {
     exit 1
@@ -183,7 +195,8 @@ msg_update='Updataing ...'
 echo $msg_update
 
 # Clear all the docker images and containers for stable build
-docker system prune -f -a
+echo -n '- Prune all ... '
+docker system prune -f -a | tail -n1
 
 # Build the images
 ./_build-image.sh
@@ -193,4 +206,4 @@ docker system prune -f -a
 }
 echo "- Updated"
 
-varsion_php=$(docker run --rm keinos/php8-jit:latest php -r 'echo phpversion();')
+version_php=$(docker run --rm keinos/php8-jit:latest php -r 'echo phpversion();')
