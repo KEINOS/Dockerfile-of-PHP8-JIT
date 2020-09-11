@@ -1,22 +1,22 @@
-ARG NAME_BASE='keinos/alpine'
-ARG NAME_TAG='latest'
+ARG NAME_IMAGE_BASE='keinos/alpine'
+ARG NAME_IMAGE_TAG='latest'
 
 # =============================================================================
-FROM ${NAME_BASE}:${NAME_TAG}
+FROM ${NAME_IMAGE_BASE}:${NAME_IMAGE_TAG}
 
 # These values are the default and must be replaced with the build option flag
 # such as: --build-arg <varname>=<value>
-ARG BUILD_ID='build-20200904'
+ARG ID_BUILD='build-20200904'
 ARG VERSION_PHP='8.0.0-dev'
 ARG TAG_RELESED='8.0.0-dev-build-20200904'
 
 LABEL \
         MAINTAINER='https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/' \
         PHP_VERSION="$VERSION_PHP" \
-        BUILD_ID="$BUILD_ID"
+        ID_BUILD="$ID_BUILD"
 
 ENV \
-        BUILD_ID="$BUILD_ID" \
+        ID_BUILD="$ID_BUILD" \
         TAG_RELESED="$TAG_RELESED" \
         VERSION_PHP="$VERSION_PHP" \
         PHP_VERSION="$VERSION_PHP" \
@@ -185,8 +185,8 @@ RUN set -eux; \
         && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
         && make clean \
         \
-        # https://github.com/docker-library/php/issues/692 (copy default example "php.ini" files
-        # somewhere easily discoverable)
+        # copy default example "php.ini" files somewhere easily discoverable)
+        # https://github.com/docker-library/php/issues/692
         && cp -v php.ini-* "${PHP_INI_DIR}/" \
         \
         # sodium was built as a shared module (so that it can be replaced later if so

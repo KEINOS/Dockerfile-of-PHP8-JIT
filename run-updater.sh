@@ -28,9 +28,9 @@ function commit_push_git() {
   echo '- GIT: Committing and pushing to GitHub ...'
   git add . &&
     git commit -m "feat: Alpine v${VERSION_OS_NEW} Build: ${BUILD_ID}" &&
-    git tag "${TAG_RELEASED_NEW}" &&
-    git push --tags &&
-    git push origin
+    git tag --force "${TAG_RELEASED_NEW}" &&
+    git push --force --tags &&
+    git push --force origin
   [ $? -ne 0 ] && {
     echo >&2 '* Failed commit and push'
     exit 1
@@ -43,7 +43,11 @@ function get_version_alpine_latest() {
 }
 
 function get_version_php() {
-  docker run --rm "${1:-$NAME_IMAGE_DOCKER_LATEST}" php -r 'echo phpversion();'
+  name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
+  docker images | grep ${name_image_tmp/:*/} >/dev/null || {
+    docker pull $name_image_tmp >/dev/null
+  }
+  docker run --rm $name_image_tmp php -r 'echo phpversion();'
 }
 
 function update_info_build() {
@@ -72,6 +76,8 @@ function update_src_archive() {
 
 function build_docker_for_smoke_test() {
   echo '- Building test image'
+  # The smoke test image will use the default source archive which is defined
+  # in Dockerfile
   docker system prune -a -f &&
     docker build -t $name_tag_test . &&
     update_php_info "$name_tag_test" &&
@@ -136,7 +142,9 @@ echo '- Current PHP source ID      :' ${ID_SRC_ARCHIVED:-unknown}
 msg_update='Updataing ...'
 [ "$update_force" -eq 0 ] && {
   [ "$VERSION_OS" = "$VERSION_OS_NEW" ] && {
+    echo
     echo 'No update found. Do nothing.'
+    echo
     usage
     exit 0
   }
@@ -165,7 +173,7 @@ msg_update='Updataing ...'
   commit_push_git
 
   echo '* Now release the commit and upload the archive, signature and the key to the assets.'
-  echo '  Then re-run this script to build the real images.'
+  echo '  Then **re-run this script** to build the real images.'
   exit 0
 }
 

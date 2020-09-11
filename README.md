@@ -31,13 +31,14 @@ docker pull keinos/php8-jit:latest
   - Source Repo(Dockerfile): https://github.com/KEINOS/Dockerfile-of-PHP8-JIT @ GitHub
   - Image Repo: https://hub.docker.com/r/keinos/php8-jit @ Docker Hub
 - Path Info
-  - Configuration File (php.ini) Path: `usr/local/etc/php/conf.d`
-  - Extension File Path: `/usr/local/lib/php/extensions`
+  - Configuration Files: `usr/local/etc/php/conf.d/` (php.ini)
+  - Extension Files: `/usr/local/lib/php/extensions/`
   - PHP Source Archive: `/usr/src/php.7z`
-    - To extract archive run `docker-php-source extract`
-    - To delete extracted source run `docker-php-source delete`
-    - To delete extracted source and cache run `docker-php-source prune`.
   - PHP Source Path (After extraction): `/usr/src/php/php-src-master/`
+- Extract/Delete Archived PHP Source
+  - Extract archive: `docker-php-source extract`
+  - Delete extracted source: `docker-php-source delete`
+  - Delete extracted source and cache: `docker-php-source prune`.
 - Settings to be noted:
   - Default user: `www-data`
   - Constant `GLOB_BRACE` flag for `glob` is not available.

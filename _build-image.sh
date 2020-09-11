@@ -43,7 +43,7 @@ NAME_BUILDER=mybuilder
 NUM_CORE=$(get_core_number)
 PATH_FILE_VER_INFO='VERSION_IMAGE_BASE.txt'
 PATH_DIR_SELF=$(cd "$(dirname "${BASH_SOURCE:-$0}")" && pwd)
-RELESE_TAG="${PHP_VERSION}-build-${BUILD_ID_CURRENT}"
+TAG_RELESED="${PHP_VERSION}-build-${BUILD_ID_CURRENT}"
 
 # -----------------------------------------------------------------------------
 #  Functions
@@ -58,7 +58,7 @@ function build_push_pull_image() {
         --build-arg NAME_TAG=$NAME_TAG \
         --build-arg BUILD_ID=$BUILD_ID_CURRENT \
         --build-arg PHP_VERSION=$PHP_VERSION \
-        --build-arg RELESE_TAG=$RELESE_TAG \
+        --build-arg TAG_RELESED=$TAG_RELESED \
         --platform $NAME_PLATFORM \
         -t "${NAME_IMAGE}:${NAME_TAG}" \
         --push . &&
