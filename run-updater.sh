@@ -21,11 +21,12 @@
 # -----------------------------------------------------------------------------
 
 function build_docker_for_smoke_test() {
+  name_tag_test='test:local'
   echo '- Building test image'
   # The smoke test image will use the default source archive which is defined
   # in Dockerfile
-  #docker system prune -a -f &&
-    #docker build -t $name_tag_test . &&
+  docker system prune -a -f &&
+    docker build -t $name_tag_test . &&
     update_php_info "$name_tag_test" &&
     update_php_modules "$name_tag_test" &&
     VERSION_PHP_NEW=$(get_version_php "$name_tag_test")
@@ -92,7 +93,6 @@ function update_php_modules() {
 }
 
 function update_src_archive() {
-  name_tag_test='test:local'
   ./_download-source.sh
 }
 
@@ -168,9 +168,9 @@ msg_update='Updataing ...'
   echo '---------------------------------------------------'
   echo ' Archived date did not match. Updating ...'
 
-  #update_src_archive || {
-  #  exit 1
-  #}
+  update_src_archive || {
+    exit 1
+  }
 
   build_docker_for_smoke_test || {
     exit 1
