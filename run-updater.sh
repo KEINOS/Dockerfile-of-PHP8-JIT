@@ -60,6 +60,11 @@ function get_version_php() {
   docker run --rm $name_image_tmp php -r 'echo phpversion();'
 }
 
+function is_available() {
+    which $1 2>/dev/null 1>/dev/null
+    return $?
+}
+
 function pull_image() {
   name_image_tmp="${1}"
   docker images | grep ${name_image_tmp/:*/} >/dev/null || {
@@ -95,6 +100,17 @@ function update_php_modules() {
 function update_src_archive() {
   ./_download-source.sh
 }
+
+# -----------------------------------------------------------------------------
+#  Requirement check
+# -----------------------------------------------------------------------------
+
+is_available 'brew' || { echo 'Homebrew must be installed.'; exit 1; }
+is_available 'docker' || { echo 'Docker must be installed. Run: brew install docker'; exit 1; }
+is_available 'curl' || { echo 'Curl must be installed. Run: brew install curl'; exit 1; }
+is_available '7z' || { echo '7zip must be installed. Run: brew install p7zip'; exit 1; }
+is_available 'unzip' || { echo 'Unzip must be installed. Run: brew install unzip'; exit 1; }
+is_available 'openssl' || { echo 'OpenSSL must be installed. Run: brew install openssl'; exit 1; }
 
 # -----------------------------------------------------------------------------
 #  Constants
@@ -140,6 +156,7 @@ esac
 
 # Load current version info
 source ./$NAME_FILE_BUILD_INFO
+
 
 # Show current info
 [ "$update_force" -ne 0 ] && { echo '- MODE: Force update'; }
