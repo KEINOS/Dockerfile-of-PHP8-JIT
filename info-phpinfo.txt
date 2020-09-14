@@ -1,9 +1,9 @@
 phpinfo()
 PHP Version => 8.0.0-dev
 
-System => Linux ea312e3b2bd4 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64
-Build Date => Sep 12 2020 01:47:24
-Build System => Linux 800e470de162 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 GNU/Linux
+System => Linux c350669eab53 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64
+Build Date => Sep 14 2020 10:46:44
+Build System => Linux 8f31e2eadb2b 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 GNU/Linux
 Configure Command =>  './configure'  '--build=x86_64-linux-musl' '--with-config-file-path=/usr/local/etc/php' '--with-config-file-scan-dir=/usr/local/etc/php/conf.d' '--enable-option-checking=fatal' '--with-mhash' '--enable-ftp' '--enable-mbstring' '--enable-mysqlnd' '--with-password-argon2' '--with-sodium=shared' '--with-pdo-sqlite=/usr' '--with-sqlite3=/usr' '--with-openssl=/usr' '--with-system-ciphers' '--with-ffi' '--enable-gd' '--with-external-gd' '--with-webp' '--with-jpeg' '--with-xpm' '--with-freetype' '--with-curl' '--with-libedit' '--with-zlib' '--with-pear' '--enable-soap' '--enable-pcntl' '--enable-opcache' '--enable-sockets' 'build_alias=x86_64-linux-musl' 'CPPFLAGS='
 Server API => Command Line Interface
 Virtual Directory Support => disabled
@@ -614,22 +614,22 @@ Module Name
 Environment
 
 Variable => Value
-HOSTNAME => ea312e3b2bd4
+HOSTNAME => c350669eab53
 PHP_INI_DIR => /usr/local/etc/php
-URL_SRC_ARCHIVE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200911/php.7z
+URL_SRC_ARCHIVE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200912/php.7z
 SHLVL => 1
 HOME => /home/www-data
 PHP_URL_ORIGINAL => https://github.com/php/php-src/archive/master.zip
-URL_SRC_ARCHIVE_SIGNATURE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200911/php.7z.sig
+URL_SRC_ARCHIVE_SIGNATURE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200912/php.7z.sig
 PHP_LDFLAGS => -Wl,-O1 -Wl,--hash-style=both -pie
 PHP_CFLAGS => -fstack-protector-strong -fpic -fpie -O2
 PHP_VERSION => 8.0.0-dev
 PHP_CPPFLAGS =>  
-ID_BUILD => build-20200904
-PHP_URL => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/8.0.0-dev-build-20200911/php.7z
+ID_BUILD => build-20200912
+PHP_URL => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/8.0.0-dev-build-20200912/php.7z
 PATH => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-URL_PUBKEY_SIGNATURE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200911/id_rsa.pkcs8.pub
-TAG_RELESED => 8.0.0-dev-build-20200911
+URL_PUBKEY_SIGNATURE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200912/id_rsa.pkcs8.pub
+TAG_RELESED => 8.0.0-dev-build-20200912
 VERSION_PHP => 8.0.0-dev
 PHPIZE_DEPS => autoconf         dpkg-dev dpkg         file         g++         gcc         libc-dev         make         pkgconf         re2c         tar
 PWD => /
@@ -637,22 +637,22 @@ PWD => /
 PHP Variables
 
 Variable => Value
-$_SERVER['HOSTNAME'] => ea312e3b2bd4
+$_SERVER['HOSTNAME'] => c350669eab53
 $_SERVER['PHP_INI_DIR'] => /usr/local/etc/php
-$_SERVER['URL_SRC_ARCHIVE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200911/php.7z
+$_SERVER['URL_SRC_ARCHIVE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200912/php.7z
 $_SERVER['SHLVL'] => 1
 $_SERVER['HOME'] => /home/www-data
 $_SERVER['PHP_URL_ORIGINAL'] => https://github.com/php/php-src/archive/master.zip
-$_SERVER['URL_SRC_ARCHIVE_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200911/php.7z.sig
+$_SERVER['URL_SRC_ARCHIVE_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200912/php.7z.sig
 $_SERVER['PHP_LDFLAGS'] => -Wl,-O1 -Wl,--hash-style=both -pie
 $_SERVER['PHP_CFLAGS'] => -fstack-protector-strong -fpic -fpie -O2
 $_SERVER['PHP_VERSION'] => 8.0.0-dev
 $_SERVER['PHP_CPPFLAGS'] => 
-$_SERVER['ID_BUILD'] => build-20200904
-$_SERVER['PHP_URL'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/8.0.0-dev-build-20200911/php.7z
+$_SERVER['ID_BUILD'] => build-20200912
+$_SERVER['PHP_URL'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/8.0.0-dev-build-20200912/php.7z
 $_SERVER['PATH'] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-$_SERVER['URL_PUBKEY_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200911/id_rsa.pkcs8.pub
-$_SERVER['TAG_RELESED'] => 8.0.0-dev-build-20200911
+$_SERVER['URL_PUBKEY_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200912/id_rsa.pkcs8.pub
+$_SERVER['TAG_RELESED'] => 8.0.0-dev-build-20200912
 $_SERVER['VERSION_PHP'] => 8.0.0-dev
 $_SERVER['PHPIZE_DEPS'] => autoconf         dpkg-dev dpkg         file         g++         gcc         libc-dev         make         pkgconf         re2c         tar
 $_SERVER['PWD'] => /
@@ -661,29 +661,29 @@ $_SERVER['SCRIPT_NAME'] =>
 $_SERVER['SCRIPT_FILENAME'] => 
 $_SERVER['PATH_TRANSLATED'] => 
 $_SERVER['DOCUMENT_ROOT'] => 
-$_SERVER['REQUEST_TIME_FLOAT'] => 1599843163.599
-$_SERVER['REQUEST_TIME'] => 1599843163
+$_SERVER['REQUEST_TIME_FLOAT'] => 1600048283.1978
+$_SERVER['REQUEST_TIME'] => 1600048283
 $_SERVER['argv'] => Array
 (
 )
 
 $_SERVER['argc'] => 0
-$_ENV['HOSTNAME'] => ea312e3b2bd4
+$_ENV['HOSTNAME'] => c350669eab53
 $_ENV['PHP_INI_DIR'] => /usr/local/etc/php
-$_ENV['URL_SRC_ARCHIVE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200911/php.7z
+$_ENV['URL_SRC_ARCHIVE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200912/php.7z
 $_ENV['SHLVL'] => 1
 $_ENV['HOME'] => /home/www-data
 $_ENV['PHP_URL_ORIGINAL'] => https://github.com/php/php-src/archive/master.zip
-$_ENV['URL_SRC_ARCHIVE_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200911/php.7z.sig
+$_ENV['URL_SRC_ARCHIVE_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200912/php.7z.sig
 $_ENV['PHP_LDFLAGS'] => -Wl,-O1 -Wl,--hash-style=both -pie
 $_ENV['PHP_CFLAGS'] => -fstack-protector-strong -fpic -fpie -O2
 $_ENV['PHP_VERSION'] => 8.0.0-dev
 $_ENV['PHP_CPPFLAGS'] => 
-$_ENV['ID_BUILD'] => build-20200904
-$_ENV['PHP_URL'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/8.0.0-dev-build-20200911/php.7z
+$_ENV['ID_BUILD'] => build-20200912
+$_ENV['PHP_URL'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/8.0.0-dev-build-20200912/php.7z
 $_ENV['PATH'] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-$_ENV['URL_PUBKEY_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200911/id_rsa.pkcs8.pub
-$_ENV['TAG_RELESED'] => 8.0.0-dev-build-20200911
+$_ENV['URL_PUBKEY_SIGNATURE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200912/id_rsa.pkcs8.pub
+$_ENV['TAG_RELESED'] => 8.0.0-dev-build-20200912
 $_ENV['VERSION_PHP'] => 8.0.0-dev
 $_ENV['PHPIZE_DEPS'] => autoconf         dpkg-dev dpkg         file         g++         gcc         libc-dev         make         pkgconf         re2c         tar
 $_ENV['PWD'] => /

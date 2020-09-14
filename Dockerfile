@@ -6,14 +6,16 @@ FROM ${NAME_IMAGE_BASE}:${NAME_IMAGE_TAG}
 
 # These values are the default and must be replaced with the build option flag
 # such as: --build-arg <varname>=<value>
-ARG ID_BUILD='build-20200904'
+ARG ID_BUILD='build-20200912'
 ARG VERSION_PHP='8.0.0-dev'
-ARG TAG_RELESED='8.0.0-dev-build-20200911'
+ARG TAG_RELESED='8.0.0-dev-build-20200912'
+ARG VERSION_OS
 
 LABEL \
         MAINTAINER='https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/' \
         PHP_VERSION="$VERSION_PHP" \
-        ID_BUILD="$ID_BUILD"
+        ID_BUILD="$ID_BUILD" \
+        ALPINE="$VERSION_OS"
 
 ENV \
         ID_BUILD="$ID_BUILD" \

@@ -46,6 +46,7 @@ function build_push_pull_image() {
         --build-arg NAME_IMAGE_TAG=$NAME_IMAGE_TAG \
         --build-arg ID_BUILD=$ID_BUILD_CURRENT \
         --build-arg VERSION_PHP=$VERSION_PHP \
+        --build-arg VERSION_OS=$VERSION_OS \
         --build-arg TAG_RELESED=$TAG_RELESED \
         --platform $NAME_PLATFORM \
         -t "${NAME_IMAGE}:${NAME_IMAGE_TAG}" \
@@ -84,6 +85,10 @@ function get_core_number() {
     }
 }
 
+function get_version_alpine_latest() {
+  docker run --rm -i keinos/alpine cat /etc/os-release | grep VERSION_ID | sed -e 's/[^0-9\.]//g'
+}
+
 function indent_stdin() {
     indent='    '
     while read line; do
@@ -114,10 +119,11 @@ function rewrite_variant_manifest() {
 #  Common Variables
 # -----------------------------------------------------------------------------
 VERSION_PHP='8.0.0-dev'
+VERSION_OS=$(get_version_alpine_latest)
 ID_BUILD_CURRENT=$(date '+%Y%m%d')
 
 NAME_IMAGE='keinos/php8-jit'
-NAME_BUILDER=mybuilder
+NAME_BUILDER='mybuilder'
 NAME_FILE_VER_INFO='info-build.txt'
 
 NUM_CORE=$(get_core_number)
@@ -134,7 +140,9 @@ TAG_RELESED="${VERSION_PHP}-build-${ID_BUILD_CURRENT}"
 # Setup docker for multi-arc
 login_docker
 
-create_builder $NAME_BUILDER
+create_builder $NAME_BUILDER || {
+    echo 'Failed to build builder'
+}
 
 echo '- Start build:'
 docker buildx use $NAME_BUILDER
@@ -211,8 +219,8 @@ docker manifest inspect $NAME_IMAGE_AND_TAG &&
     docker manifest push $NAME_IMAGE_AND_TAG --purge
 
 # Create manifest list with current version
-echo "- Creating manifest for image: ${NAME_IMAGE} with: v${VERSION_OS} tag"
 NAME_IMAGE_AND_TAG="${NAME_IMAGE}:build_${ID_BUILD_CURRENT}"
+echo "- Creating manifest for image: ${NAME_IMAGE} tag:${NAME_IMAGE_AND_TAG}"
 
 create_manifest $NAME_IMAGE_AND_TAG "$LIST_IMAGE_INCLUDE"
 
