@@ -72,6 +72,17 @@ function pull_image() {
   }
 }
 
+function release_git() {
+  tag_git_short=$(git rev-parse --short HEAD)
+  tag_release="8.0.0-dev ($tag_git_short)"
+  hub release create \
+    -m "${TAG_RELEASED_NEW}\nfeat: Alpine v${VERSION_OS_NEW} Build: ${ID_BUILD_NEW}" \
+    -F "${PATH_DIR_SELF}/src/php.7z" \
+    -F "${PATH_DIR_SELF}/src/php.7z.sig" \
+    -F "${PATH_DIR_SELF}/id_rsa.pkcs8.pub" \
+    "${TAG_RELEASED_NEW}"
+}
+
 function update_info_build() {
   echo "Updating/over-writing ${NAME_FILE_BUILD_INFO}"
   cat <<EOL >$PATH_FILE_BUILD_INFO
@@ -111,6 +122,7 @@ is_available 'curl' || { echo 'Curl must be installed. Run: brew install curl'; 
 is_available '7z' || { echo '7zip must be installed. Run: brew install p7zip'; exit 1; }
 is_available 'unzip' || { echo 'Unzip must be installed. Run: brew install unzip'; exit 1; }
 is_available 'openssl' || { echo 'OpenSSL must be installed. Run: brew install openssl'; exit 1; }
+is_available 'hub' || { echo 'hub must be installed. Run: brew install hub'; exit 1; }
 
 # -----------------------------------------------------------------------------
 #  Constants
@@ -198,11 +210,15 @@ msg_update='Updataing ...'
     exit 1
   }
 
-  commit_push_git
+  commit_push_git || {
+    echo 'Failed to commit/push'
+    exit 1
+  }
 
-  echo '* Now release the commit and upload the archive, signature and the key to the assets.'
-  echo '  Then **re-run this script** to build the real images.'
-  exit 0
+  release_git || {
+    echo 'Failed to release'
+    exit 1
+  }
 }
 
 # -----------------------------------------------------------------------------
