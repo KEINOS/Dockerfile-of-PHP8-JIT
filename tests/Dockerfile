@@ -25,9 +25,12 @@ RUN \
     composer --version && \
     rm composer-setup.php
 
-# Install PHPUnit
+# Install composer packages
 RUN \
-    composer require --ignore-platform-reqs phpunit/phpunit && \
+    composer require --ignore-platform-reqs \
+        phpunit/phpunit \
+        rybakit/msgpack \
+    && \
     ./vendor/bin/phpunit --version
 
 ENTRYPOINT [ "/app/vendor/bin/phpunit", "--testdox", "./tests" ]
