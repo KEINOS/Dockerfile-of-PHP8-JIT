@@ -49,7 +49,7 @@ copy_publickey_of_sign() {
 
 download_signature() {
     [ -f "$path_file_archive_sign" ] || {
-        echo '- Downloading signature of the archive'
+        echo "- Downloading signature of the archive from: ${URL_SRC_ARCHIVE_SIGNATURE} to: ${path_file_archive_sign} "
         curl --location --output "$path_file_archive_sign" $URL_SRC_ARCHIVE_SIGNATURE
     }
 }
@@ -58,17 +58,12 @@ download_src_archive() {
     [ -f "$path_file_archive" ] && {
         echo '- Archive of PHP source found.'
     } || {
-        echo '- Downloading PHP source archive'
+        echo "- Downloading PHP source archive from: ${URL_SRC_ARCHIVE} to: ${path_file_archive}"
         curl --location --output "$path_file_archive" $URL_SRC_ARCHIVE
-    }
-    verify_src_archive || {
-        exit 1
     }
 }
 
 verify_src_archive() {
-    download_signature_archive &&
-        copy_publickey_of_sign
     echo '- Verifying archive with the signature'
 
     printf '%s' "* pubkey: ${path_file_key_public_pkcs8} ... "
@@ -96,6 +91,11 @@ case "$1" in
         mkdir -p "$path_dir_src_ext"
         [ -f "$path_file_archive" ] || {
             download_src_archive
+            download_signature_archive
+            copy_publickey_of_sign
+            verify_src_archive || {
+                exit 1
+            }
         }
         apk add --no-cache --virtual .arch-deps p7zip
         if [ ! -f "$path_dir_src_ext/.docker-extracted" ]; then
