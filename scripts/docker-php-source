@@ -94,7 +94,7 @@ case "$1" in
                 download_signature_archive &&
                 copy_publickey_of_sign &&
                 verify_src_archive
-            [ "$?" -eq 0 ] && {
+            [ "$?" -ne 0 ] && {
                 echo >&2 '* Failed to download source and signature.'
                 exit 1
             }

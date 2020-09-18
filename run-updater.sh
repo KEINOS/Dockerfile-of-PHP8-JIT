@@ -19,23 +19,20 @@
 # -----------------------------------------------------------------------------
 #  Functions
 # -----------------------------------------------------------------------------
-
 build_docker_for_smoke_test() {
-  # Docker image tag for testing
-  name_tag_test='test:local'
   echo '- Building test image to get phpinfo and modules loaded'
   # The smoke test image will use the default source archive. This is defined
   # in Dockerfile
   {
     docker system prune -a -f >/dev/null &&
-      docker build -t $name_tag_test . &&
-      update_php_info "$name_tag_test" &&
-      update_php_modules "$name_tag_test"
+      docker build -t "${NAME_TAG_IMAGE_TEST}" . &&
+      update_php_info "${NAME_TAG_IMAGE_TEST}" &&
+      update_php_modules "${NAME_TAG_IMAGE_TEST}"
   } | while read line; do
     #indent
     echo "    ${line}"
   done
-  VERSION_PHP_NEW=$(get_version_php "$name_tag_test")
+  VERSION_PHP_NEW=$(get_version_php "$NAME_TAG_IMAGE_TEST")
   echo "- PHP version of smoke test: ${VERSION_PHP_NEW}"
 }
 
@@ -121,10 +118,19 @@ update_src_archive() {
   ./_download-source.sh
 }
 
-# -----------------------------------------------------------------------------
-#  Requirement check
-# -----------------------------------------------------------------------------
+usage() {
+  echo "usage: ${0} [OPTIONS]"
+  echo
+  echo "OPTIONS:"
+  echo
+  echo "  help   This help."
+  echo "  force  Update even Alpine's version are the same."
+  echo
+}
 
+# -----------------------------------------------------------------------------
+#  Requirements check
+# -----------------------------------------------------------------------------
 is_available 'brew' || {
   echo >&2 'Homebrew must be installed.'
   exit 1
@@ -161,7 +167,10 @@ is_available 'gh' || {
 }
 
 printf '%s' '- Docker login ... '
-docker login | tail -n1
+docker login | tail -n1 ||  {
+  echo >&2 'You need to be logged in Docker. Run: docker login'
+  exit 1
+}
 
 # -----------------------------------------------------------------------------
 #  Constants
@@ -170,6 +179,7 @@ NAME_FILE_BUILD_INFO='info-build.txt'
 NAME_FILE_PHP_INFO='info-phpinfo.txt'
 NAME_FILE_EXT_INFO='info-get_loaded_extensions.txt'
 NAME_IMAGE_DOCKER_LATEST='keinos/php8-jit:latest'
+NAME_TAG_IMAGE_TEST='test:local'
 
 VERSION_OS_NEW=$(get_version_alpine_latest)
 VERSION_PHP_NEW=$(get_version_php)
@@ -185,16 +195,6 @@ PATH_FILE_EXT_INFO="${PATH_DIR_SELF:-.}/${NAME_FILE_EXT_INFO}"
 # -----------------------------------------------------------------------------
 #  Setup
 # -----------------------------------------------------------------------------
-usage() {
-  echo "usage: ${0} [OPTIONS]"
-  echo
-  echo "OPTIONS:"
-  echo
-  echo "  help   This help."
-  echo "  force  Update even Alpine's version are the same."
-  echo
-}
-
 update_force=0 # Force update by default: 0=no 1=yes
 case "$1" in
   force)
@@ -216,7 +216,7 @@ echo '- Current GitHub release tag :' ${TAG_RELEASED:-unknown}
 echo '- Current PHP source ID      :' ${ID_SRC_ARCHIVED:-unknown}
 
 [ "$update_force" -ne 0 ] && {
-  echo '- Update Mode              : Force'
+  echo '- Update Mode               : Force'
   ID_SRC_ARCHIVED=
 }
 
