@@ -21,15 +21,22 @@
 # -----------------------------------------------------------------------------
 
 build_docker_for_smoke_test() {
+  # Docker image tag for testing
   name_tag_test='test:local'
-  echo '- Building test image'
+  echo '- Building test image to get phpinfo and modules loaded'
   # The smoke test image will use the default source archive. This is defined
   # in Dockerfile
-  docker system prune -a -f &&
-    docker build -t $name_tag_test . &&
-    update_php_info "$name_tag_test" &&
-    update_php_modules "$name_tag_test" &&
-    VERSION_PHP_NEW=$(get_version_php "$name_tag_test")
+  {
+    docker system prune -a -f >/dev/null &&
+      docker build -t $name_tag_test . &&
+      update_php_info "$name_tag_test" &&
+      update_php_modules "$name_tag_test"
+  } | while read line; do
+    #indent
+    echo "    ${line}"
+  done
+  VERSION_PHP_NEW=$(get_version_php "$name_tag_test")
+  echo "- PHP version of smoke test: ${VERSION_PHP_NEW}"
 }
 
 commit_push_git() {
@@ -75,6 +82,7 @@ pull_image() {
 release_git() {
   tag_git_short=$(git rev-parse --short HEAD)
   tag_release="8.0.0-dev ($tag_git_short)"
+  echo "- Releasing ... tag:${TAG_RELEASED_NEW}"
   gh release create \
     "${TAG_RELEASED_NEW}" \
     "${PATH_DIR_SELF}/src/php.7z" \
@@ -222,6 +230,7 @@ msg_update='Updataing ...'
     exit 1
   }
 
+  # Pre-build to get/save phpinfo and modules loaded
   build_docker_for_smoke_test || {
     exit 1
   }

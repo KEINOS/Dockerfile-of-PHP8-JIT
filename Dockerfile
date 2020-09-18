@@ -24,7 +24,7 @@ ENV \
         PHP_VERSION="$VERSION_PHP" \
         PHP_INI_DIR='/usr/local/etc/php' \
         PHP_URL_ORIGINAL="https://github.com/php/php-src/archive/master.zip" \
-        PHP_URL="https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/${TAG_RELESED}/php.7z" \
+        PHP_URL="https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/${TAG_RELESED}/php.7z" \
         # Apply stack smash protection to functions using local buffers and alloca()
         #   Make PHP's main executable position-independent (improves ASLR security
         #   mechanism, and has no performance impact on x86_64)
