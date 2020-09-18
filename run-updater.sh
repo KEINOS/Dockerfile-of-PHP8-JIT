@@ -47,10 +47,6 @@ commit_push_git() {
     git tag --force "${TAG_RELEASED_NEW}" &&
     git push --force --tags &&
     git push --force origin
-  [ $? -ne 0 ] && {
-    echo >&2 '* Failed commit and push'
-    exit 1
-  }
 }
 
 get_version_alpine_latest() {
