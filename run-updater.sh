@@ -200,12 +200,16 @@ esac
 source ./$NAME_FILE_BUILD_INFO
 
 # Show current info
-[ "$update_force" -ne 0 ] && { echo '- MODE: Force update'; }
 echo '- Current Alpine version     :' ${VERSION_OS:-unknown} '-> Latest version:' ${VERSION_OS_NEW:-unknown}
 echo '- Current PHP version        :' ${VERSION_PHP:-unknown}
 echo '- Current build ID           :' ${ID_BUILD:-unknown}
 echo '- Current GitHub release tag :' ${TAG_RELEASED:-unknown}
 echo '- Current PHP source ID      :' ${ID_SRC_ARCHIVED:-unknown}
+
+[ "$update_force" -ne 0 ] && {
+  echo '- Update Mode              : Force'
+  ID_SRC_ARCHIVED=
+}
 
 # Compare OS version
 msg_update='Updataing ...'
