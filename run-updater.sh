@@ -129,30 +129,39 @@ is_available 'brew' || {
   echo >&2 'Homebrew must be installed.'
   exit 1
 }
+
 is_available 'docker' || {
   echo >&2 'Docker must be installed. Run: brew install docker'
   exit 1
 }
+
 is_available 'curl' || {
   echo >&2 'Curl must be installed. Run: brew install curl'
   exit 1
 }
+
 is_available '7z' || {
   echo >&2 '7zip must be installed. Run: brew install p7zip'
   exit 1
 }
+
 is_available 'unzip' || {
   echo >&2 'Unzip must be installed. Run: brew install unzip'
   exit 1
 }
+
 is_available 'openssl' || {
   echo >&2 'OpenSSL must be installed. Run: brew install openssl'
   exit 1
 }
+
 is_available 'gh' || {
   echo >&2 'GitHub CLI must be installed. Run: brew install gh'
   exit 1
 }
+
+printf '%s' '- Docker login ... '
+docker login | tail -n1
 
 # -----------------------------------------------------------------------------
 #  Constants
@@ -230,9 +239,9 @@ msg_update='Updataing ...'
   echo '---------------------------------------------------'
   echo ' Archived date did not match. Updating ...'
 
-  update_src_archive || {
-    exit 1
-  }
+  #update_src_archive || {
+  #  exit 1
+  #}
 
   # Pre-build to get/save phpinfo and modules loaded
   build_docker_for_smoke_test || {

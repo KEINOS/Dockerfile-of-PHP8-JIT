@@ -67,13 +67,24 @@ download_src_archive() {
 }
 
 verify_src_archive() {
-    download_signature_archive
-    copy_publickey_of_sign
-    printf '- Verifying archive with the signature ... '
-    echo "* pubkey: ${path_file_key_public_pkcs8}"
-    echo "* sign: ${path_file_archive_sign}"
-    echo "* arch: ${path_file_archive}"
-    libressl dgst -sha256 -verify "$path_file_key_public_pkcs8" -signature "$path_file_archive_sign" "$path_file_archive"
+    download_signature_archive &&
+        copy_publickey_of_sign
+    echo '- Verifying archive with the signature'
+
+    printf '%s' "* pubkey: ${path_file_key_public_pkcs8} ... "
+    [ -f "$path_file_key_public_pkcs8" ] && echo 'OK' || echo 'NG'
+
+    printf '%s' "* sign: ${path_file_archive_sign} ... "
+    [ -f "$path_file_archive_sign" ] && echo 'OK' || echo 'NG'
+
+    printf '%s' "* arch: ${path_file_archive} .... "
+    [ -f "$path_file_archive" ] && echo 'OK' || echo 'NG'
+
+    libressl dgst \
+        -sha256 \
+        -verify "$path_file_key_public_pkcs8" \
+        -signature "$path_file_archive_sign" \
+        "$path_file_archive"
 }
 
 # -----------------------------------------------------------------------------
