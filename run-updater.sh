@@ -43,12 +43,12 @@ commit_push_git() {
   # Updating git
   echo '- GIT: Committing and pushing to GitHub ...'
   git add .
-  git status | grep working\ tree\ clean || {
-    git commit -m "feat: Alpine v${VERSION_OS_NEW} Build: ${ID_BUILD_NEW}" &&
-      git tag --force "${TAG_RELEASED_NEW}" &&
-      git push --force --tags &&
-      git push --force origin
+  git status 2>&1 | grep working\ tree\ clean || {
+    git commit -m "feat: Alpine v${VERSION_OS_NEW} Build: ${ID_BUILD_NEW}"
   }
+  git tag --force "${TAG_RELEASED_NEW}" &&
+    git push --force --tags &&
+    git push --force origin
 }
 
 get_version_alpine_latest() {
