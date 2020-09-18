@@ -47,7 +47,7 @@ copy_publickey_of_sign() {
     cp "$path_file_key_public_pkcs8_bundle" "$path_file_key_public_pkcs8"
 }
 
-download_signature() {
+download_signature_archive() {
     [ -f "$path_file_archive_sign" ] || {
         echo "- Downloading signature of the archive from: ${URL_SRC_ARCHIVE_SIGNATURE} to: ${path_file_archive_sign} "
         curl --location --output "$path_file_archive_sign" $URL_SRC_ARCHIVE_SIGNATURE
@@ -90,13 +90,16 @@ case "$1" in
     extract)
         mkdir -p "$path_dir_src_ext"
         [ -f "$path_file_archive" ] || {
-            download_src_archive
-            download_signature_archive
-            copy_publickey_of_sign
-            verify_src_archive || {
+            download_src_archive &&
+                download_signature_archive &&
+                copy_publickey_of_sign &&
+                verify_src_archive
+            [ "$?" -eq 0 ] && {
+                echo >&2 '* Failed to download source and signature.'
                 exit 1
             }
         }
+
         apk add --no-cache --virtual .arch-deps p7zip
         if [ ! -f "$path_dir_src_ext/.docker-extracted" ]; then
             echo '- Extracting PHP source into ...' $path_dir_src_ext
