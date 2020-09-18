@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# -----------------------------------------------------------------------------
+#  Constants
+# -----------------------------------------------------------------------------
 TAG_RELESED_DEFAULT='8.0.0-dev-build-20200904'
 
 URL_SRC_ARCHIVE="https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/${TAG_RELESED:-$TAG_RELESED_DEFAULT}/php.7z"
@@ -14,10 +17,16 @@ name_file_key_public_pkcs8='id_rsa.pkcs8.pub'
 path_dir_src='/usr/src'
 path_dir_src_ext="${path_dir_src}/php"
 
+# File path to be downloaded or copyied
 path_file_archive="${path_dir_src}/${name_file_archive}"
 path_file_archive_sign="${path_dir_src}/${name_file_archive_sign}"
 path_file_key_public_pkcs8="${path_dir_src}/${name_file_key_public_pkcs8}"
+# File path of the public key that should be bundled within the image
+path_file_key_public_pkcs8_bundle="/${name_file_key_public_pkcs8}"
 
+# -----------------------------------------------------------------------------
+#  Functions
+# -----------------------------------------------------------------------------
 usage() {
     echo "usage: ${0} COMMAND"
     echo
@@ -29,27 +38,23 @@ usage() {
     echo "   prune    delete extracted PHP source and the cache. (Less image size)"
 }
 
-function download_signature_archive() {
+copy_publickey_of_sign() {
+    [ -f "$path_file_key_public_pkcs8_bundle" ] || {
+        echo >&2 "Public key of the signature not found at: ${path_file_key_public_pkcs8_bundle}"
+        echo >&2 '*This file should be bundled in the image.'
+        exit 1
+    }
+    cp "$path_file_key_public_pkcs8_bundle" "$path_file_key_public_pkcs8"
+}
+
+download_signature() {
     [ -f "$path_file_archive_sign" ] || {
         echo '- Downloading signature of the archive'
         curl --location --output "$path_file_archive_sign" $URL_SRC_ARCHIVE_SIGNATURE
     }
-    [ -f "$path_file_key_public_pkcs8" ] || {
-        echo '- Downloading public key of the signature'
-        curl --location --output "$path_file_key_public_pkcs8" $URL_PUBKEY_SIGNATURE
-    }
 }
 
-function verify_src_archive() {
-    download_signature_archive
-    printf '- Verifying archive with the signature ... '
-    echo "pubkey: $path_file_key_public_pkcs8"
-    echo "sign: $path_file_archive_sign"
-    echo "arch: $path_file_archive"
-    libressl dgst -sha256 -verify "$path_file_key_public_pkcs8" -signature "$path_file_archive_sign" "$path_file_archive"
-}
-
-function download_src_archive() {
+download_src_archive() {
     [ -f "$path_file_archive" ] && {
         echo '- Archive of PHP source found.'
     } || {
@@ -61,33 +66,47 @@ function download_src_archive() {
     }
 }
 
+verify_src_archive() {
+    download_signature_archive
+    copy_publickey_of_sign
+    printf '- Verifying archive with the signature ... '
+    echo "* pubkey: ${path_file_key_public_pkcs8}"
+    echo "* sign: ${path_file_archive_sign}"
+    echo "* arch: ${path_file_archive}"
+    libressl dgst -sha256 -verify "$path_file_key_public_pkcs8" -signature "$path_file_archive_sign" "$path_file_archive"
+}
+
+# -----------------------------------------------------------------------------
+#  Main
+# -----------------------------------------------------------------------------
+
 case "$1" in
-extract)
-    mkdir -p "$path_dir_src_ext"
-    [ -f "$path_file_archive" ] || {
-        download_src_archive
-    }
-    apk add --no-cache --virtual .arch-deps p7zip
-    if [ ! -f "$path_dir_src_ext/.docker-extracted" ]; then
-        echo '- Extracting PHP source into ...' $path_dir_src_ext
-        7z x -o$path_dir_src_ext /usr/src/php.7z &&
-            touch "$path_dir_src_ext/.docker-extracted" &&
-            echo 'PHP source extracted'
-    fi
-    apk del --purge --no-network .arch-deps
-    ;;
+    extract)
+        mkdir -p "$path_dir_src_ext"
+        [ -f "$path_file_archive" ] || {
+            download_src_archive
+        }
+        apk add --no-cache --virtual .arch-deps p7zip
+        if [ ! -f "$path_dir_src_ext/.docker-extracted" ]; then
+            echo '- Extracting PHP source into ...' $path_dir_src_ext
+            7z x -o$path_dir_src_ext /usr/src/php.7z &&
+                touch "$path_dir_src_ext/.docker-extracted" &&
+                echo 'PHP source extracted'
+        fi
+        apk del --purge --no-network .arch-deps
+        ;;
 
-delete)
-    rm -rf "$path_dir_src_ext"
-    ;;
+    delete)
+        rm -rf "$path_dir_src_ext"
+        ;;
 
-prune)
-    rm -rf "$path_dir_src_ext"
-    rm -rf /usr/src/*.pub /usr/src/*
-    ;;
+    prune)
+        rm -rf "$path_dir_src_ext"
+        rm -rf /usr/src/*.pub /usr/src/*
+        ;;
 
-*)
-    usage
-    exit 1
-    ;;
+    *)
+        usage
+        exit 1
+        ;;
 esac

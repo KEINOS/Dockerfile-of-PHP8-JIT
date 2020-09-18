@@ -37,7 +37,7 @@ HEREDOC
 #  Functions
 # -----------------------------------------------------------------------------
 
-function build_push_pull_image() {
+build_push_pull_image() {
     echo "- Remove image"
     docker image rm -f "${NAME_IMAGE_BASE}:${NAME_IMAGE_TAG}"
     echo "- Building image: ${NAME_PLATFORM}"
@@ -57,7 +57,7 @@ function build_push_pull_image() {
     return $?
 }
 
-function create_builder() {
+create_builder() {
     echo '- Create builder: ' $1
     docker buildx ls | grep $1 1>/dev/null
     [ $? -ne 0 ] && {
@@ -67,7 +67,7 @@ function create_builder() {
     return $?
 }
 
-function create_manifest() {
+create_manifest() {
     echo '- Removing image from local:'
     docker image rm --force $1 2>/dev/null 1>/dev/null
     echo "- Creating manifest for: $1"
@@ -77,7 +77,7 @@ function create_manifest() {
     return $?
 }
 
-function get_core_number() {
+get_core_number() {
     which nproc 2>&1 && {
         echo $(nproc)
     } || {
@@ -85,11 +85,11 @@ function get_core_number() {
     }
 }
 
-function get_version_alpine_latest() {
+get_version_alpine_latest() {
   docker run --rm -i keinos/alpine cat /etc/os-release | grep VERSION_ID | sed -e 's/[^0-9\.]//g'
 }
 
-function indent_stdin() {
+indent_stdin() {
     indent='    '
     while read line; do
         echo "${indent}${line}"
@@ -97,7 +97,7 @@ function indent_stdin() {
     echo
 }
 
-function login_docker() {
+login_docker() {
     echo -n '- Login to Docker: '
     docker login 2>/dev/null 1>/dev/null || {
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin || {
@@ -108,7 +108,7 @@ function login_docker() {
     echo 'OK'
 }
 
-function rewrite_variant_manifest() {
+rewrite_variant_manifest() {
     echo "- Re-writing variant to: $3"
     docker manifest annotate $1 $2 --variant $3
 

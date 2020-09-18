@@ -6,9 +6,9 @@ FROM ${NAME_IMAGE_BASE}:${NAME_IMAGE_TAG}
 
 # These values are the default and must be replaced with the build option flag
 # such as: --build-arg <varname>=<value>
-ARG ID_BUILD='build-20200912'
+ARG ID_BUILD='build-20200917'
 ARG VERSION_PHP='8.0.0-dev'
-ARG TAG_RELESED='8.0.0-dev-build-20200912'
+ARG TAG_RELESED='8.0.0-dev-build-20200917'
 ARG VERSION_OS
 
 LABEL \
@@ -62,6 +62,7 @@ ENV PHPIZE_DEPS \
 
 COPY scripts/docker-php-* /usr/local/bin/
 COPY php.ini/docker-php-enable-* /usr/local/etc/php/conf.d/
+COPY id_rsa.pkcs8.pub /id_rsa.pkcs8.pub
 
 RUN set -eux; \
         # persistent/runtime deps

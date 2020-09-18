@@ -24,14 +24,14 @@ usage() {
 	echo
 	echo 'Possible values for ext-name:'
 	find . \
-			-mindepth 2 \
-			-maxdepth 2 \
-			-type f \
-			-name 'config.m4' \
-		| xargs -n1 dirname \
-		| xargs -n1 basename \
-		| sort \
-		| xargs
+		-mindepth 2 \
+		-maxdepth 2 \
+		-type f \
+		-name 'config.m4' |
+		xargs -n1 dirname |
+		xargs -n1 basename |
+		sort |
+		xargs
 	echo
 	echo 'Some of the above modules are already compiled into PHP; please check'
 	echo 'the output of "php -i" to see which modules are already loaded.'
@@ -50,16 +50,17 @@ if [ -e /lib/apk/db/installed ]; then
 fi
 
 if [ "$pm" = 'apk' ]; then
-	if \
-		[ -n "$PHPIZE_DEPS" ] \
-		&& ! apk info --installed .phpize-deps > /dev/null \
-		&& ! apk info --installed .phpize-deps-configure > /dev/null \
-	; then
+	if
+		[ -n "$PHPIZE_DEPS" ] &&
+			! apk info --installed .phpize-deps >/dev/null &&
+			! apk info --installed .phpize-deps-configure >/dev/null \
+			;
+	then
 		apk add --no-cache --virtual .phpize-deps-configure $PHPIZE_DEPS
 	fi
 fi
 
-if command -v dpkg-architecture > /dev/null; then
+if command -v dpkg-architecture >/dev/null; then
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"
 	set -- --build="$gnuArch" "$@"
 fi

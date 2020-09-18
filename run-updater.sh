@@ -20,10 +20,10 @@
 #  Functions
 # -----------------------------------------------------------------------------
 
-function build_docker_for_smoke_test() {
+build_docker_for_smoke_test() {
   name_tag_test='test:local'
   echo '- Building test image'
-  # The smoke test image will use the default source archive which is defined
+  # The smoke test image will use the default source archive. This is defined
   # in Dockerfile
   docker system prune -a -f &&
     docker build -t $name_tag_test . &&
@@ -32,7 +32,7 @@ function build_docker_for_smoke_test() {
     VERSION_PHP_NEW=$(get_version_php "$name_tag_test")
 }
 
-function commit_push_git() {
+commit_push_git() {
   git status | grep 'nothing to commit' && {
     return 0
   }
@@ -49,41 +49,42 @@ function commit_push_git() {
   }
 }
 
-function get_version_alpine_latest() {
+get_version_alpine_latest() {
   docker pull keinos/alpine >/dev/null
   docker run --rm -i keinos/alpine cat /etc/os-release | grep VERSION_ID | sed -e 's/[^0-9\.]//g'
 }
 
-function get_version_php() {
+get_version_php() {
   name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
   pull_image "$name_image_tmp"
   docker run --rm $name_image_tmp php -r 'echo phpversion();'
 }
 
-function is_available() {
-    which $1 2>/dev/null 1>/dev/null
-    return $?
+is_available() {
+  which "$1" 2>/dev/null 1>/dev/null
+  return "$?"
 }
 
-function pull_image() {
+pull_image() {
   name_image_tmp="${1}"
   docker images | grep ${name_image_tmp/:*/} >/dev/null || {
     docker pull $name_image_tmp >/dev/null
   }
 }
 
-function release_git() {
+release_git() {
   tag_git_short=$(git rev-parse --short HEAD)
   tag_release="8.0.0-dev ($tag_git_short)"
-  hub release create \
-    -m "${TAG_RELEASED_NEW}\nfeat: Alpine v${VERSION_OS_NEW} Build: ${ID_BUILD_NEW}" \
-    -F "${PATH_DIR_SELF}/src/php.7z" \
-    -F "${PATH_DIR_SELF}/src/php.7z.sig" \
-    -F "${PATH_DIR_SELF}/id_rsa.pkcs8.pub" \
-    "${TAG_RELEASED_NEW}"
+  gh release create \
+    "${TAG_RELEASED_NEW}" \
+    "${PATH_DIR_SELF}/src/php.7z" \
+    "${PATH_DIR_SELF}/src/php.7z.sig" \
+    "${PATH_DIR_SELF}/id_rsa.pkcs8.pub" \
+    --title "$tag_release" \
+    --notes "${TAG_RELEASED_NEW}\nfeat: Alpine v${VERSION_OS_NEW} Build: ${ID_BUILD_NEW}"
 }
 
-function update_info_build() {
+update_info_build() {
   echo "Updating/over-writing ${NAME_FILE_BUILD_INFO}"
   cat <<EOL >$PATH_FILE_BUILD_INFO
 VERSION_OS=${VERSION_OS_NEW}
@@ -94,21 +95,21 @@ TAG_RELEASED=${TAG_RELEASED_NEW}
 EOL
 }
 
-function update_php_info() {
+update_php_info() {
   echo '- Updating PHP info file'
   name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
   pull_image "$name_image_tmp"
   docker run --rm "${name_image_tmp}" php -i >$PATH_FILE_PHP_INFO
 }
 
-function update_php_modules() {
+update_php_modules() {
   echo '- Updating PHP loaded modules'
   name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
   pull_image "$name_image_tmp"
   docker run --rm "${name_image_tmp}" php -m >$PATH_FILE_EXT_INFO
 }
 
-function update_src_archive() {
+update_src_archive() {
   ./_download-source.sh
 }
 
@@ -116,13 +117,34 @@ function update_src_archive() {
 #  Requirement check
 # -----------------------------------------------------------------------------
 
-is_available 'brew' || { echo 'Homebrew must be installed.'; exit 1; }
-is_available 'docker' || { echo 'Docker must be installed. Run: brew install docker'; exit 1; }
-is_available 'curl' || { echo 'Curl must be installed. Run: brew install curl'; exit 1; }
-is_available '7z' || { echo '7zip must be installed. Run: brew install p7zip'; exit 1; }
-is_available 'unzip' || { echo 'Unzip must be installed. Run: brew install unzip'; exit 1; }
-is_available 'openssl' || { echo 'OpenSSL must be installed. Run: brew install openssl'; exit 1; }
-is_available 'hub' || { echo 'hub must be installed. Run: brew install hub'; exit 1; }
+is_available 'brew' || {
+  echo >&2 'Homebrew must be installed.'
+  exit 1
+}
+is_available 'docker' || {
+  echo >&2 'Docker must be installed. Run: brew install docker'
+  exit 1
+}
+is_available 'curl' || {
+  echo >&2 'Curl must be installed. Run: brew install curl'
+  exit 1
+}
+is_available '7z' || {
+  echo >&2 '7zip must be installed. Run: brew install p7zip'
+  exit 1
+}
+is_available 'unzip' || {
+  echo >&2 'Unzip must be installed. Run: brew install unzip'
+  exit 1
+}
+is_available 'openssl' || {
+  echo >&2 'OpenSSL must be installed. Run: brew install openssl'
+  exit 1
+}
+is_available 'gh' || {
+  echo >&2 'GitHub CLI must be installed. Run: brew install gh'
+  exit 1
+}
 
 # -----------------------------------------------------------------------------
 #  Constants
@@ -158,17 +180,16 @@ usage() {
 
 update_force=0 # Force update by default: 0=no 1=yes
 case "$1" in
-force)
-  update_force=1
-  ;;
-*)
-  update_force=0
-  ;;
+  force)
+    update_force=1
+    ;;
+  *)
+    update_force=0
+    ;;
 esac
 
 # Load current version info
 source ./$NAME_FILE_BUILD_INFO
-
 
 # Show current info
 [ "$update_force" -ne 0 ] && { echo '- MODE: Force update'; }
@@ -206,17 +227,17 @@ msg_update='Updataing ...'
   }
 
   update_info_build || {
-    echo 'Failed to update'
+    echo >&2 'Failed to update'
     exit 1
   }
 
   commit_push_git || {
-    echo 'Failed to commit/push'
+    echo >&2 'Failed to commit/push'
     exit 1
   }
 
   release_git || {
-    echo 'Failed to release'
+    echo >&2 'Failed to release'
     exit 1
   }
 }
@@ -231,7 +252,8 @@ echo -n '- Prune all ... '
 docker system prune -f -a | tail -n1
 
 # Build the images
-./_build-image.sh
+echo '- Building Docker images for all architectures'
+TAG_RELESED="${TAG_RELEASED_NEW}" ./_build-image.sh
 [ $? -ne 0 ] && {
   echo >&2 "* Failed update: ${PATH_FILE_BUILD_INFO}"
   exit 1

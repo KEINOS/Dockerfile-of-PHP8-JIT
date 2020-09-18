@@ -81,26 +81,27 @@ function installPkgPecl() {
 
 # Detect command
 case "$1" in
-help)
-    usage
-    exit 0
-    ;;
+    help)
+        usage
+        exit 0
+        ;;
 
-install)
-    shift
-    ;;
+    install)
+        shift
+        ;;
 
-*)
-    usage
-    echo >&2 'Unknown command'
-    exit 1
-    ;;
+    *)
+        usage
+        echo >&2 'Unknown command'
+        exit 1
+        ;;
 esac
 
 PHP_EXTENSION_DIR=$(php -r 'echo ini_get("extension_dir");')
 
 srcExists=
 if [ -d /usr/src/php ]; then
+    echo '- Exracted PHP source found.'
     srcExists=1
 fi
 
@@ -141,7 +142,7 @@ if [ "$pm" = 'apk' ] && [ -n "$apkDel" ]; then
 fi
 
 if [ -e /usr/src/php/.docker-delete-me ]; then
-    docker-php-source delete &&
+    docker-php-source prune &&
         echo 'PHP source dir deleted.'
 fi
 

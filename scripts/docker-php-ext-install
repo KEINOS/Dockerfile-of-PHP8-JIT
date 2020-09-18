@@ -58,17 +58,17 @@ while true; do
 	flag="$1"
 	shift
 	case "$flag" in
-	--help | -h | '-?') usage && exit 0 ;;
-	--ini-name) iniName="$1" && shift ;;
-	--jobs | -j) j="$1" && shift ;;
-	--) break ;;
-	*)
-		{
-			echo "error: unknown flag: $flag"
-			usage
-		} >&2
-		exit 1
-		;;
+		--help | -h | '-?') usage && exit 0 ;;
+		--ini-name) iniName="$1" && shift ;;
+		--jobs | -j) j="$1" && shift ;;
+		--) break ;;
+		*)
+			{
+				echo "error: unknown flag: $flag"
+				usage
+			} >&2
+			exit 1
+			;;
 	esac
 done
 

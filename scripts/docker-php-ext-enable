@@ -13,11 +13,11 @@ usage() {
 	echo
 	echo 'Possible values for module-name:'
 	find -maxdepth 1 \
-			-type f \
-			-name '*.so' \
-			-exec basename '{}' ';' \
-		| sort \
-		| xargs
+		-type f \
+		-name '*.so' \
+		-exec basename '{}' ';' |
+		sort |
+		xargs
 	echo
 	echo 'Some of the above modules are already compiled into PHP; please check'
 	echo 'the output of "php -i" to see which modules are already loaded.'
@@ -31,7 +31,7 @@ while true; do
 	flag="$1"
 	shift
 	case "$flag" in
-		--help|-h|'-?') usage && exit 0 ;;
+		--help | -h | '-?') usage && exit 0 ;;
 		--ini-name) iniName="$1" && shift ;;
 		--) break ;;
 		*)
@@ -49,17 +49,17 @@ for module; do
 	if [ -z "$module" ]; then
 		continue
 	fi
-	if [ -f "$module.so" ] && ! [ -f "$module" ]; then
+	if [ -f "${module}.so" ] && ! [ -f "$module" ]; then
 		# allow ".so" to be optional
-		module="$module.so"
+		module="${module}.so"
 	fi
 	if ! [ -f "$module" ]; then
-		echo >&2 "error: '$module' does not exist"
+		echo >&2 "error: '${module}' does not exist"
 		echo >&2
 		usage >&2
 		exit 1
 	fi
-	modules="$modules $module"
+	modules="${modules} ${module}"
 done
 
 if [ -z "$modules" ]; then
@@ -74,11 +74,12 @@ fi
 
 apkDel=
 if [ "$pm" = 'apk' ]; then
-	if \
-		[ -n "$PHPIZE_DEPS" ] \
-		&& ! apk info --installed .phpize-deps > /dev/null \
-		&& ! apk info --installed .phpize-deps-configure > /dev/null \
-	; then
+	if
+		[ -n "$PHPIZE_DEPS" ] &&
+			! apk info --installed .phpize-deps >/dev/null &&
+			! apk info --installed .phpize-deps-configure >/dev/null \
+			;
+	then
 		apk add --no-cache --virtual '.docker-php-ext-enable-deps' binutils
 		apkDel='.docker-php-ext-enable-deps'
 	fi
@@ -114,7 +115,7 @@ for module in $modules; do
 			;;
 	esac
 	if ! grep -q "$line" "$ini" 2>/dev/null; then
-		echo "$line" >> "$ini"
+		echo "$line" >>"$ini"
 	fi
 done
 
