@@ -208,16 +208,25 @@ for each in "$LIST_IMAGE_INCLUDE"; do
     echo
 done
 
+# -----------------------------------------------------------------------------
+#  Create manifest list with latest version
+# -----------------------------------------------------------------------------
+NAME_IMAGE_AND_TAG="${NAME_IMAGE}:latest"
+echo "- Creating manifest for image: ${NAME_IMAGE} tag:${NAME_IMAGE_AND_TAG}"
 
-#echo "- Creating manifest for image: ${NAME_IMAGE} with: latest tag"
-#NAME_IMAGE_AND_TAG="${NAME_IMAGE}:latest"
-#create_manifest $NAME_IMAGE_AND_TAG "$LIST_IMAGE_INCLUDE"
-#rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv6 v6l
-#rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv7 v7l
-#docker manifest inspect $NAME_IMAGE_AND_TAG &&
-#    docker manifest push $NAME_IMAGE_AND_TAG --purge
+create_manifest $NAME_IMAGE_AND_TAG "$LIST_IMAGE_INCLUDE"
 
-# Create manifest list with current version
+# Re-write the variant for ARM6 and ARM7 architecture for RPIs
+rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv6 v6l
+rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv7 v7l
+
+docker manifest inspect $NAME_IMAGE_AND_TAG &&
+    docker manifest push $NAME_IMAGE_AND_TAG --purge &&
+    docker image rm -f $NAME_IMAGE_AND_TAG
+
+# -----------------------------------------------------------------------------
+#  Create manifest list with current version
+# -----------------------------------------------------------------------------
 NAME_IMAGE_AND_TAG="${NAME_IMAGE}:build_${ID_BUILD_CURRENT}"
 echo "- Creating manifest for image: ${NAME_IMAGE} tag:${NAME_IMAGE_AND_TAG}"
 
@@ -231,4 +240,5 @@ rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv7 v7l
 #  PUSH MANIFEST
 # ===============
 docker manifest inspect $NAME_IMAGE_AND_TAG &&
-    docker manifest push $NAME_IMAGE_AND_TAG --purge
+    docker manifest push $NAME_IMAGE_AND_TAG --purge &&
+    docker image rm -f $NAME_IMAGE_AND_TAG
