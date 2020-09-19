@@ -109,7 +109,7 @@ login_docker() {
 }
 
 rewrite_variant_manifest() {
-    echo "- Re-writing variant to: $3"
+    echo "- Re-writing ${1} variant from: ${2} to: ${3}"
     docker manifest annotate $1 $2 --variant $3
 
     return $?
@@ -190,15 +190,15 @@ docker buildx use default
 #  CREATE MANIFEST
 # =================
 
-LIST_IMAGE_INCLUDE="$NAME_IMAGE:armv6 $NAME_IMAGE:armv7 $NAME_IMAGE:arm64 $NAME_IMAGE:amd64"
+LIST_IMAGE_INCLUDE="${NAME_IMAGE}:armv6 ${NAME_IMAGE}:armv7 ${NAME_IMAGE}:arm64 ${NAME_IMAGE}:amd64"
 
 echo -n '- Prune all the files to ensure not to add duplicate ... '
 docker system prune -f -a >/dev/null && {
     echo 'OK'
 }
 
-echo '- Pulling back all the built images ...'
-for each in $LIST_IMAGE_INCLUDE; do
+echo "- Pulling back all the built images of ${NAME_IMAGE} ..."
+for each in "$LIST_IMAGE_INCLUDE"; do
     docker pull $each |
         while read line; do
             printf '\r%*s\r' ${lenLine:-${#line}}
@@ -208,15 +208,14 @@ for each in $LIST_IMAGE_INCLUDE; do
     echo
 done
 
-echo "- Creating manifest for image: ${NAME_IMAGE} with: latest tag"
-NAME_IMAGE_AND_TAG="${NAME_IMAGE}:latest"
-create_manifest $NAME_IMAGE_AND_TAG "$LIST_IMAGE_INCLUDE"
 
-rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv6 v6l
-rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv7 v7l
-
-docker manifest inspect $NAME_IMAGE_AND_TAG &&
-    docker manifest push $NAME_IMAGE_AND_TAG --purge
+#echo "- Creating manifest for image: ${NAME_IMAGE} with: latest tag"
+#NAME_IMAGE_AND_TAG="${NAME_IMAGE}:latest"
+#create_manifest $NAME_IMAGE_AND_TAG "$LIST_IMAGE_INCLUDE"
+#rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv6 v6l
+#rewrite_variant_manifest $NAME_IMAGE_AND_TAG $NAME_IMAGE:armv7 v7l
+#docker manifest inspect $NAME_IMAGE_AND_TAG &&
+#    docker manifest push $NAME_IMAGE_AND_TAG --purge
 
 # Create manifest list with current version
 NAME_IMAGE_AND_TAG="${NAME_IMAGE}:build_${ID_BUILD_CURRENT}"
