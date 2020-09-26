@@ -109,7 +109,8 @@ Hello, World!
 $
 ```
 
-```docker
+```dockerfile
+# Sample Dockerfile to install composer
 FROM keinos/php8-jit:latest
 
 USER root
