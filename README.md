@@ -142,6 +142,10 @@ ENTRYPOINT [ "/app/vendor/bin/phpunit", "--testdox", "./tests" ]
 
 - Sample Dockerfiles: [./samples/](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/tree/php8-jit/samples)
 
+## FAQ/Troubleshooting/TIPS
+
+- See: [FAQ.md](https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/blob/php8-jit/FAQ.md)
+
 ## Advanced Usage
 
 ### Installing Extensions
