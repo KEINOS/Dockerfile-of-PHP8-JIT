@@ -1,5 +1,8 @@
 #
-# Sample usage to install extensions of msgpack PECL package from source.
+# Sample usage to install "msgpack" composer package.
+#
+# The "msgpack" PECL extension fails to install in PHP8 even from the source.
+# But the composer package works.
 #
 # - About MessagePack:
 #   MessagePack is an efficient binary serialization format. It lets you exchange
