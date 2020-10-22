@@ -8,7 +8,7 @@ cat <<'HEREDOC'
 ===============================================================================
 This script will:
 
-1. Builds Docker images for ARM v6, ARM v7 and x86_64 (Intel/AMD64 compatible)
+1. Build Docker images for ARM v6, ARM v7 and x86_64 (Intel/AMD64 compatible)
    architectures.
 2. Pushes to Docker Hub the images made above.
 3. Creates a "latest" manifest file which includes the above images and pushes
