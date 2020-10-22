@@ -1,9 +1,9 @@
 phpinfo()
 PHP Version => 8.0.0-dev
 
-System => Linux d8048ec54702 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64
-Build Date => Sep 19 2020 22:15:58
-Build System => Linux fab21d47e324 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 GNU/Linux
+System => Linux 64fbfb2d81e5 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64
+Build Date => Oct 22 2020 12:23:17
+Build System => Linux 56a145eaff85 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 GNU/Linux
 Configure Command =>  './configure'  '--build=x86_64-linux-musl' '--with-config-file-path=/usr/local/etc/php' '--with-config-file-scan-dir=/usr/local/etc/php/conf.d' '--enable-option-checking=fatal' '--with-mhash' '--enable-ftp' '--enable-mbstring' '--enable-mysqlnd' '--with-password-argon2' '--with-sodium=shared' '--with-pdo-sqlite=/usr' '--with-sqlite3=/usr' '--with-openssl=/usr' '--with-system-ciphers' '--with-ffi' '--enable-gd' '--with-external-gd' '--with-webp' '--with-jpeg' '--with-xpm' '--with-freetype' '--with-curl' '--with-libedit' '--with-zlib' '--with-pear' '--enable-soap' '--enable-pcntl' '--enable-opcache' '--enable-sockets' 'build_alias=x86_64-linux-musl' 'CPPFLAGS='
 Server API => Command Line Interface
 Virtual Directory Support => disabled
@@ -614,7 +614,7 @@ Module Name
 Environment
 
 Variable => Value
-HOSTNAME => d8048ec54702
+HOSTNAME => 64fbfb2d81e5
 PHP_INI_DIR => /usr/local/etc/php
 URL_SRC_ARCHIVE => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200917/php.7z
 SHLVL => 1
@@ -637,7 +637,7 @@ PWD => /
 PHP Variables
 
 Variable => Value
-$_SERVER['HOSTNAME'] => d8048ec54702
+$_SERVER['HOSTNAME'] => 64fbfb2d81e5
 $_SERVER['PHP_INI_DIR'] => /usr/local/etc/php
 $_SERVER['URL_SRC_ARCHIVE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200917/php.7z
 $_SERVER['SHLVL'] => 1
@@ -661,14 +661,14 @@ $_SERVER['SCRIPT_NAME'] =>
 $_SERVER['SCRIPT_FILENAME'] => 
 $_SERVER['PATH_TRANSLATED'] => 
 $_SERVER['DOCUMENT_ROOT'] => 
-$_SERVER['REQUEST_TIME_FLOAT'] => 1600521525.1932
-$_SERVER['REQUEST_TIME'] => 1600521525
+$_SERVER['REQUEST_TIME_FLOAT'] => 1603337291.7124
+$_SERVER['REQUEST_TIME'] => 1603337291
 $_SERVER['argv'] => Array
 (
 )
 
 $_SERVER['argc'] => 0
-$_ENV['HOSTNAME'] => d8048ec54702
+$_ENV['HOSTNAME'] => 64fbfb2d81e5
 $_ENV['PHP_INI_DIR'] => /usr/local/etc/php
 $_ENV['URL_SRC_ARCHIVE'] => https://github.com/KEINOS/Dockerfile_of_PHP8-JIT/releases/download/8.0.0-dev-build-20200917/php.7z
 $_ENV['SHLVL'] => 1
