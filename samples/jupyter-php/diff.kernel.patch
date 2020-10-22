@@ -1,0 +1,6 @@
+--- kernel.json
++++ kernel.json
+@@ -1 +1 @@
+-{"argv":["php","\/opt\/jupyter-php\/pkgs\/vendor\/litipk\/jupyter-php\/src\/kernel.php","{connection_file}"],"display_name":"PHP","language":"php","env":{}}
+\ No newline at end of file
++{"argv":["php","\/opt\/jupyter-php\/pkgs\/vendor\/litipk\/jupyter-php\/src\/kernel.php","{connection_file}"],"display_name":"PHP 8.0","language":"php","env":{}}

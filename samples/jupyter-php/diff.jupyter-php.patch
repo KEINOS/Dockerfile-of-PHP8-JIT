@@ -1,0 +1,24 @@
+diff --git a/composer.json b/composer.json
+index d9ddd6b..7ca3003 100644
+--- a/composer.json
++++ b/composer.json
+@@ -4,7 +4,6 @@
+     "type": "project",
+     "license": "MIT",
+     "require": {
+-        "php": ">=7.0",
+         "symfony/console": "^3.0",
+         "seld/cli-prompt": "^1.0"
+     },
+diff --git a/src/Installer/Installer.php b/src/Installer/Installer.php
+index 839d2fa..75e6fed 100644
+--- a/src/Installer/Installer.php
++++ b/src/Installer/Installer.php
+@@ -162,6 +162,8 @@ abstract class Installer
+             ' --no-progress ' .
+             ' --prefer-dist ' .
+             ' --optimize-autoloader ' .
++            ' --ignore-platform-reqs ' .
++            ' --verbose ' .
+             ' --working-dir="' . $pkgsDir . '" '
+         );
