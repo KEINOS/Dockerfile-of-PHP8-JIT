@@ -195,7 +195,7 @@ But as an alternative, you can use `docker-php-ext-pecl install` to install PECL
       # Install dependencies for YAML
       apk --no-cache add yaml-dev && \
       # Install PECL from source
-      docker-php-ext-pecl install yaml svm && \
+      docker-php-ext-pecl install yaml && \
       # Delete PHP source archive cache
       docker-php-source prune
 
@@ -203,7 +203,8 @@ But as an alternative, you can use `docker-php-ext-pecl install` to install PECL
   USER www-data
   ```
 
-- **Note:** Some PECL extension packages are not available to install. Mostly the pre-built extensions such as '`json`', '`hash`' and etc.
+- **Note:** Some PECL extension packages are not available to install. Extensions such as '`json`', '`hash`' and etc.
+- For more see [samples](./samples/).
 
 ## Perfomance Comparison
 
