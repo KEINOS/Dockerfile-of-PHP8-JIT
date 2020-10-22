@@ -61,7 +61,7 @@ $ docker run --rm -it -p 8001:8000 -v $(pwd)/data:/workspace jupyter:local
      or http://127.0.0.1:8000/?token=2c7a9b0dce099eb8c2571072e51b0bce499143dab0aff271
 
 # In the case above the URL to access from your browser will be:
-#   http://localhost:8001/token=2c7a9b0dce099eb8c2571072e51b0bce499143dab0aff271
+#   http://localhost:8001/?token=2c7a9b0dce099eb8c2571072e51b0bce499143dab0aff271
 ```
 
 ## Note
