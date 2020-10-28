@@ -37,7 +37,7 @@ docker run -p 8001:8000 -v $(pwd)/data:/workspace jupyter:local
 You can access the container from Jupyter's terminal via the web browser. But if you want to interact locally, not booting the Jupyter lab, then specify the shell.
 
 ```bash
-docker run --rm -it --entrypoint /bin/sh
+docker run --rm -it jupyter:local /bin/sh
 ```
 
 ## Sample usage
