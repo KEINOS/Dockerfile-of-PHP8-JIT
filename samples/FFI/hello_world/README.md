@@ -1,4 +1,4 @@
-# Basic FFI usage
+# Example of calling a function from the shared library
 
 Sample Dockerfile to check [FFI](https://www.php.net/manual/en/intro.ffi.php) functionality by using "libc.so.6" as FFI to just say "Hello world!".
 
