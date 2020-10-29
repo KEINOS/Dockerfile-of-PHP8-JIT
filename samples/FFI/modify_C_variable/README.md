@@ -1,4 +1,4 @@
-# Example Creating and Modifying C variables
+# Example creating and modifying C variables
 
 Sample Dockerfile to check [FFI](https://www.php.net/manual/en/intro.ffi.php) functionality.
 
