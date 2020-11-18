@@ -60,7 +60,7 @@ RUN apk --no-cache add \
     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; \
     ACTUAL_SIGNATURE="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"; \
     [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ] && { >&2 echo 'ERROR: Invalid installer signature'; exit 1; }; \
-    php composer-setup.php --quiet --install-dir=/bin --filename=composer && \
+    php composer-setup.php --install-dir=/bin --version=1.10.17 --filename=composer && \
     # Smoke test (composer)
     composer --version && \
     rm composer-setup.php && \
