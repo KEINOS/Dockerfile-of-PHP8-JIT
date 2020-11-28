@@ -9,7 +9,7 @@
 
 # PHP8.0 with JIT Enabled on Docker
 
-This is a PHP8-dev (php 8.0.0-beta3) Alpine Docker image with **JIT feature enabled** built from [official source](https://github.com/php/php-src).
+This is a PHP8.0.0-dev Alpine Docker image with **JIT feature enabled** built from [official latest master source](https://github.com/php/php-src).
 
 ```bash
 docker pull keinos/php8-jit:latest
