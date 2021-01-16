@@ -244,16 +244,23 @@ msg_update='Updataing ...'
 
   # Pre-build to get/save phpinfo and modules loaded
   build_docker_for_smoke_test || {
-    exit 1
+    echo >&2 'Failed to somoke test the docker build.'
+    echo >&2 'update build info ... skipped'
+    echo >&2 'commit/push ......... skipped'
+    echo >&2 'release ............. skipped'
+     exit 1
   }
 
   update_info_build || {
-    echo >&2 'Failed to update'
+    echo >&2 'Failed to update build info.'
+    echo >&2 'commit/push ......... skipped'
+    echo >&2 'release ............. skipped'
     exit 1
   }
 
   commit_push_git || {
     echo >&2 'Failed to commit/push'
+    echo >&2 'release ............. skipped'
     exit 1
   }
 
