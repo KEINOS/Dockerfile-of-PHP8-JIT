@@ -28,7 +28,7 @@ build_docker_for_smoke_test() {
       docker build -t "${NAME_TAG_IMAGE_TEST}" . &&
       update_php_info "${NAME_TAG_IMAGE_TEST}" &&
       update_php_modules "${NAME_TAG_IMAGE_TEST}"
-  } | while read line; do
+  } | while read -r line; do
     #indent
     echo "    ${line}"
   done
@@ -59,7 +59,7 @@ get_version_alpine_latest() {
 get_version_php() {
   name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
   pull_image "$name_image_tmp"
-  docker run --rm $name_image_tmp php -r 'echo phpversion();'
+  docker run --rm "$name_image_tmp" php -r 'echo phpversion();'
 }
 
 is_available() {
@@ -69,8 +69,8 @@ is_available() {
 
 pull_image() {
   name_image_tmp="${1}"
-  docker images | grep ${name_image_tmp/:*/} >/dev/null || {
-    docker pull $name_image_tmp >/dev/null
+  docker images | grep "${name_image_tmp/:*/}" >/dev/null || {
+    docker pull "$name_image_tmp" >/dev/null
   }
 }
 
@@ -89,7 +89,7 @@ release_git() {
 
 update_info_build() {
   echo "Updating/over-writing ${NAME_FILE_BUILD_INFO}"
-  cat <<EOL >$PATH_FILE_BUILD_INFO
+  cat <<EOL >"$PATH_FILE_BUILD_INFO"
 VERSION_OS=${VERSION_OS_NEW}
 VERSION_PHP=${VERSION_PHP_NEW}
 ID_BUILD=${ID_BUILD_NEW}
@@ -102,14 +102,14 @@ update_php_info() {
   echo '- Updating PHP info file'
   name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
   pull_image "$name_image_tmp"
-  docker run --rm "${name_image_tmp}" php -i >$PATH_FILE_PHP_INFO
+  docker run --rm "${name_image_tmp}" php -i >"$PATH_FILE_PHP_INFO"
 }
 
 update_php_modules() {
   echo '- Updating PHP loaded modules'
   name_image_tmp="${1:-$NAME_IMAGE_DOCKER_LATEST}"
   pull_image "$name_image_tmp"
-  docker run --rm "${name_image_tmp}" php -m >$PATH_FILE_EXT_INFO
+  docker run --rm "${name_image_tmp}" php -m >"$PATH_FILE_EXT_INFO"
 }
 
 update_src_archive() {
@@ -195,23 +195,24 @@ PATH_FILE_EXT_INFO="${PATH_DIR_SELF:-.}/${NAME_FILE_EXT_INFO}"
 # -----------------------------------------------------------------------------
 update_force=0 # Force update by default: 0=no 1=yes
 case "$1" in
-  force)
-    update_force=1
-    ;;
-  *)
-    update_force=0
-    ;;
+force)
+  update_force=1
+  ;;
+*)
+  update_force=0
+  ;;
 esac
 
 # Load current version info
-source ./$NAME_FILE_BUILD_INFO
+# shellcheck source=info-build.txt
+source "./${NAME_FILE_BUILD_INFO}"
 
 # Show current info
-echo '- Current Alpine version     :' ${VERSION_OS:-unknown} '-> Latest version:' ${VERSION_OS_NEW:-unknown}
-echo '- Current PHP version        :' ${VERSION_PHP:-unknown}
-echo '- Current build ID           :' ${ID_BUILD:-unknown}
-echo '- Current GitHub release tag :' ${TAG_RELEASED:-unknown}
-echo '- Current PHP source ID      :' ${ID_SRC_ARCHIVED:-unknown}
+echo "- Current Alpine version     : ${VERSION_OS:-unknown} -> Latest version: ${VERSION_OS_NEW:-unknown}"
+echo "- Current PHP version        : ${VERSION_PHP:-unknown}"
+echo "- Current build ID           : ${ID_BUILD:-unknown}"
+echo "- Current GitHub release tag : ${TAG_RELEASED:-unknown}"
+echo "- Current PHP source ID      : ${ID_SRC_ARCHIVED:-unknown}"
 
 [ "$update_force" -ne 0 ] && {
   echo '- Update Mode               : Force'
@@ -265,7 +266,7 @@ msg_update='Updataing ...'
 # -----------------------------------------------------------------------------
 #  Main (Update)
 # -----------------------------------------------------------------------------
-echo $msg_update
+echo "$msg_update"
 
 # Clear all the docker images and containers for stable build
 echo -n '- Prune all ... '
@@ -273,11 +274,12 @@ docker system prune -f -a | tail -n1
 
 # Build the images
 echo '- Building Docker images for all architectures'
-TAG_RELESED="${TAG_RELEASED_NEW}" ./_build-image.sh
-[ $? -ne 0 ] && {
+if ! TAG_RELESED="${TAG_RELEASED_NEW}" ./_build-image.sh; then
   echo >&2 "* Failed update: ${PATH_FILE_BUILD_INFO}"
   exit 1
-}
+fi
 echo "- Updated"
 
 version_php=$(docker run --rm keinos/php8-jit:latest php -r 'echo phpversion();')
+
+echo "- PHP version of keinos/php8-jit:latest: ${version_php}"

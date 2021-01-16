@@ -53,65 +53,65 @@ function compare_archive_contents() {
     }
 
     echo -n '  Diff between extracted zip and 7zip archive directories ... '
-    diff -r "$PATH_DIR_SRC_EXTRACTED" "$PATH_DIR_SRC_EXTRACTED_VERIFY" && {
+    if diff -r "$PATH_DIR_SRC_EXTRACTED" "$PATH_DIR_SRC_EXTRACTED_VERIFY"; then
         echo 'OK'
-    } || {
+    else
         echo '  ❌  Failed to archive files. Diff did not match.'
         exit 1
-    }
+    fi
 
     cd "$PATH_DIR_RETURN"
 }
 
 function delete_dir_archive_extracted() {
     echo -n '- Deleting extracted source code ...'
-    rm -rf "$PATH_DIR_SRC_EXTRACTED" "$PATH_DIR_SRC_EXTRACTED_VERIFY" "$PATH_FILE_ZIP" && {
+    if rm -rf "$PATH_DIR_SRC_EXTRACTED" "$PATH_DIR_SRC_EXTRACTED_VERIFY" "$PATH_FILE_ZIP"; then
         echo 'OK'
-    } || {
+    else
         echo '  ❌  Failed to delete extacted source code directories.'
         exit 1
-    }
+    fi
 }
 
 function download_archive_php_src() {
     cd "$PATH_DIR_SELF" && rm -rf src
 
     echo -n '- Downloading latest master archive ... '
-    mkdir -p $PATH_DIR_SRC_EXTRACTED
-    curl --silent --show-error --location --output "$PATH_FILE_ZIP" "${PHP_URL}" && {
+    mkdir -p "$PATH_DIR_SRC_EXTRACTED"
+    if curl --silent --show-error --location --output "$PATH_FILE_ZIP" "${PHP_URL}"; then
         echo 'OK'
-    } || {
+    else
         echo '  ❌  Failed to download official PHP source archive.'
         echo 'Request header: '
         curl -s -I "$PHP_URL" |
-            while read line; do
+            while read -r line; do
                 echo "    ${line}"
             done
         exit 1
-    }
+    fi
 }
 
 function get_core_number() {
-    which nproc 2>&1 && {
-        echo $(nproc)
-    } || {
-        echo $(sysctl -n hw.logicalcpu_max)
-    }
+    if which nproc 2>/dev/null 1>/dev/null; then
+        nproc
+    else
+        sysctl -n hw.logicalcpu_max
+    fi
 }
 
 function rearchive_php_src_to_7z() {
     echo '- Re-archiving zip to 7z archive:'
     echo -n '  Extracting zip archive ... '
-    unzip -q "$PATH_FILE_ZIP" -d "${PATH_DIR_SRC_EXTRACTED}" && {
+    if unzip -q "$PATH_FILE_ZIP" -d "${PATH_DIR_SRC_EXTRACTED}"; then
         echo 'OK'
-    } || {
+    else
         exit 1
-    }
+    fi
 
     echo -n '  Archiving to 7z ... '
     cd "$PATH_DIR_SRC_EXTRACTED"
     NUM_CORE=$(get_core_number)
-    7z a -mmt${NUM_CORE:-1} -mx$LEVEL_COMPRESS "$PATH_FILE_7Z" $NAME_DIR_SRC_EXTRACTED | tail -n1
+    7z a -mmt"${NUM_CORE:-1}" -mx$LEVEL_COMPRESS "$PATH_FILE_7Z" $NAME_DIR_SRC_EXTRACTED | tail -n1
 
     cd "$PATH_DIR_RETURN"
 }
@@ -121,11 +121,10 @@ function sign_file() {
 
     INPUTFILE="$1"
     OUTPUTFILE="$2"
-    openssl dgst -$ALGO_SIGN -sign "$PATH_FILE_PEM_PRIVATE" "$INPUTFILE" >"$OUTPUTFILE"
-    [ $? -ne 0 ] && {
+    if ! openssl dgst -$ALGO_SIGN -sign "$PATH_FILE_PEM_PRIVATE" "$INPUTFILE" >"$OUTPUTFILE"; then
         echo '  ❌  Failed to sign archive file.'
         exit 1
-    }
+    fi
     echo 'Signed. This file can be verified with the public key in GitHub.'
 }
 
@@ -152,4 +151,4 @@ sign_file "$PATH_FILE_7Z" "$PATH_FILE_SIGN"
 verify_signed_file "$PATH_FILE_SIGN" "$PATH_FILE_7Z"
 delete_dir_archive_extracted
 
-echo "ID_SRC_ARCHIVE=${ID_SRC_ARCHIVE}" >> "$PATH_FILE_BUILD_INFO"
+echo "ID_SRC_ARCHIVE=${ID_SRC_ARCHIVE}" >>"$PATH_FILE_BUILD_INFO"

@@ -26,15 +26,15 @@ list_image=(
   'keinos/php8-jit:latest'
 )
 
-function runBench(){
+function runBench() {
   name_image=$1
   name_bench=$2
   docker run \
     --rm \
-    -v $(pwd)/bench:/app \
+    -v "$(pwd)"/bench:/app \
     -w /app \
-    $name_image \
-    php $name_bench
+    "$name_image" \
+    php "$name_bench"
   return $?
 }
 
@@ -60,21 +60,21 @@ docker image prune -f | awk '{print "\t", $0}'
 #list_image+=($name_image_php8jit)
 
 echo '- Pulling images'
-for item in ${list_image[@]}; do
-    docker pull $item | awk '{print "\t", $0}'
-    echo
+for item in "${list_image[@]}"; do
+  docker pull "$item" | awk '{print "\t", $0}'
+  echo
 done
 
 echo '==============='
 echo ' Running benches '
 echo '==============='
 
-for image in ${list_image[@]}; do
-  echo '- Image:' $image
+for image in "${list_image[@]}"; do
+  echo '- Image:' "$image"
   echo
 
-  for bench in ${list_bench[@]}; do
-    runBench $image $bench | awk '{print "\t", $0}'
+  for bench in "${list_bench[@]}"; do
+    runBench "$image" "$bench" | awk '{print "\t", $0}'
     echo
   done
 done
