@@ -15,6 +15,7 @@ This is a PHP8.0.0-dev Alpine Docker image with **JIT feature enabled** built fr
 docker pull keinos/php8-jit:latest
 ```
 
+- **NOTE: On ARM architectures `JIT` won't turn ON, [yet](https://aws.amazon.com/jp/blogs/compute/improving-performance-of-php-for-arm64-and-impact-on-amazon-ec2-m6g-instances/).** Though, it's still fast.
 - The `latest` tag image **works on: ARM v6l, ARM v7l, ARM64 and x86_64 (AMD/Intel) architectures**.
 
 <details><summary>Image Informations and notes</summary><div><br>
